@@ -42,7 +42,7 @@ public class Epic extends TypeOfTask.Task {
     public  void checkStatus() {
         ArrayList<Subtask> checkList = this.listOfSubtask;
         int size = checkList.size();
-        Status check = this.status;
+
 
 
         if (size == 0) {
@@ -73,7 +73,7 @@ public class Epic extends TypeOfTask.Task {
             this.status=Status.IN_PROGRESS;
 
         }
-        Status __new=this.status;
+
 
 
     }
