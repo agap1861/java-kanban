@@ -11,7 +11,6 @@ public class Manager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    Print print = new Print();
 
 
     public void addNewTask(TypeOfTask.Task newTask) {
@@ -33,24 +32,23 @@ public class Manager {
 
     }
 
-    public void showUpTask() {
-        print.showUpTask(tasks);
+    public HashMap<Integer, Task> showUpTask() {
+
+        return tasks;
 
 
     }
 
-    public void showUpEpic() {
-        print.showUpEpic(epics);
-    }
-
-    public void showUpSubtask() {
-        print.showUpSubtask(subtasks);
-    }
-
-    public void showUpEpicWithSubtask() {
-        print.showUpEpicWithSubtask(epics, subtasks);
+    public HashMap<Integer, Epic> showUpEpic() {
+        return epics;
 
     }
+
+    public HashMap<Integer, Subtask> showUpSubtask() {
+
+        return subtasks;
+    }
+
 
     public void removeAllTask() {
         tasks.clear();
@@ -69,17 +67,20 @@ public class Manager {
         subtasks.clear();
     }
 
-    public void removeById(int id) {
+    public void removeTaskById(int id) {
+
         Task foundTask = tasks.get(id);
         if (foundTask != null) {
-
-            print.idDetectedByTask(foundTask);
             tasks.remove(id);
-            return;
+
         }
+
+    }
+
+    public void removeEpicById(int id) {
         Epic foundEpic = epics.get(id);
         if (foundEpic != null) {
-            print.idDetectedByEpic(foundEpic);
+
             epics.remove(id);
             for (Integer idSubtask : subtasks.keySet()) {
                 if (subtasks.get(idSubtask).getIdEpic() == id) {
@@ -87,52 +88,47 @@ public class Manager {
                 }
             }
 
-            return;
+
         }
+    }
+
+    public void removeSubtaskById(int id) {
         Subtask foundSubtask = subtasks.get(id);
         if (foundSubtask != null) {
-            print.idDetectedBySubtask(foundSubtask);
+
             subtasks.remove(id);
             int idEpic = foundSubtask.getIdEpic();
             epics.get(idEpic).getListOfSubtask().remove(foundSubtask);
 
-
-            return;
         }
-        print.notificationNotFoundId();
-
 
     }
 
-    public void searchById(int id) {
+
+    public Task searchTaskById(int id) {
         Task foundTask = tasks.get(id);
-        if (foundTask != null) {
-            print.notificationFoundId();
-            foundTask.printTask();
-
-            return;
-        }
-        Epic foundEpic = epics.get(id);
-        if (foundEpic != null) {
-            print.notificationFoundId();
-            foundEpic.printTask();
-            return;
-        }
-        Subtask foundSubtask = subtasks.get(id);
-        if (foundSubtask != null) {
-            print.notificationFoundId();
-            foundSubtask.printTask();
-
-
-            return;
-        }
-        print.notificationNotFoundId();
-
+        return foundTask;
 
     }
 
-    public void listSubtaskOfEpic(Epic foundEpic) {
-        print.listSubtaskOfEpic(foundEpic, epics);
+    public Epic searchEpicById(int id) {
+        Epic foundEpic = epics.get(id);
+        return foundEpic;
+
+    }
+
+    public Subtask searchSubtaskById(int id) {
+        Subtask foundSubtask = subtasks.get(id);
+        return foundSubtask;
+
+    }
+
+
+    public ArrayList<Subtask> listSubtaskOfEpic(Epic foundEpic) {
+        ArrayList<Subtask> listOfSubtasl = foundEpic.getListOfSubtask();
+        return listOfSubtasl;
+
+
     }
 
     public void upateTask(Task oldTask, Task newTask) {
@@ -163,11 +159,6 @@ public class Manager {
         newEpic.setListOfSubtask(newListOfSubtask);
 
         newEpic.checkStatus();
-    }
-
-    public void showSubtaskbyEpic(Epic epic) {
-
-        print.showSubtaskbyEpic(epic);
     }
 
 
