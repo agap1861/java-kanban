@@ -8,11 +8,11 @@ public class Subtask extends TypeOfTask.Task {
 
     public Subtask(String nameOfSubtask, String description, TypeOfTask.Epic epic) {
         super(nameOfSubtask, description);
-        idEpic = epic.id;
+        idEpic = epic.getId();
     }
     public Subtask(String nameOfSubtask, String description, Status status) {
         super(nameOfSubtask, description);
-        this.status=status;
+        this.setStatus(status);
 
     }
 

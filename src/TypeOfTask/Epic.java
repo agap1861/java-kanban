@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Epic extends TypeOfTask.Task {
 
-    ArrayList<Subtask> listOfSubtask;
+    private ArrayList<Subtask> listOfSubtask;
 
 
 
@@ -22,6 +22,10 @@ public class Epic extends TypeOfTask.Task {
     public void setStatus(Status status) {
         System.out.println("Нельзя менять статус Epic'a");
     }
+    @Override
+    public Status getStatus(){
+        return this.status;
+    }
 
     public ArrayList<Subtask> getListOfSubtask() {
         return listOfSubtask;
@@ -31,10 +35,10 @@ public class Epic extends TypeOfTask.Task {
         this.listOfSubtask = listOfSubtask;
     }
     @Override
-    public String toConsole(){
+    public String toString(){
 
-        String result = "name={"+this.name +"} id={"+this.id+"} description={"+this.description+
-                "} TypeOfTask.Status={"+ this.status+"}";
+        String result = "name={"+this.getName() +"} id={"+this.getId()+"} description={"+this.getDescription()+
+                "} Status={"+ this.getStatus()+"}";
         return result;
 
     }

@@ -2,16 +2,15 @@ package TypeOfTask;
 
 import java.util.Objects;
 
-public class Task  {
+public class Task {
 
 
+    private int id;
+    private String name;
 
-    int id;
-    String name;
 
-
-    Status status;
-    String description;
+    private Status status;
+    private String description;
 
     public Task(String nameOfTask, String description) {
         this.name = nameOfTask;
@@ -19,37 +18,39 @@ public class Task  {
         this.status = Status.NEW;
         this.id = CreateNewId();
     }
-    public Task(String nameOFTask, String description, Status status){
+
+    public Task(String nameOFTask, String description, Status status) {
         this.name = nameOFTask;
         this.description = description;
-        this.status=status;
+        this.status = status;
     }
+
     private static int currentId = 0;
 
-    private static int CreateNewId(){
+    private static int CreateNewId() {
         currentId++;
         return currentId;
     }
-
 
 
     @Override
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         Task task = (Task) object;
-        return id == task.id && Objects.equals(name, task.name) && status == task.status &&
-                Objects.equals(description, task.description);
+        return id == task.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, status);
+        return Objects.hashCode(id);
     }
-    public String toConsole(){
-        String result = "name={"+this.name +"} id={"+this.id+"} description={"+this.description+"} TypeOfTask.Status={"+
-                this.status+"}";
+
+    public String toString() {
+        String result = "name={" + this.name + "} id={" + this.id + "} description={" + this.description + "} Status={" +
+                this.status + "}";
         return result;
     }
+
     public String getDescription() {
         return description;
     }
@@ -73,6 +74,7 @@ public class Task  {
     public void setId(int id) {
         this.id = id;
     }
+
     public Status getStatus() {
         return status;
     }
@@ -80,7 +82,6 @@ public class Task  {
     public void setStatus(Status status) {
         this.status = status;
     }
-
 
 
 }
