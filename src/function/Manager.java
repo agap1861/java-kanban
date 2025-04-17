@@ -4,6 +4,7 @@ import TypeOfTask.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class Manager {
@@ -11,7 +12,6 @@ public class Manager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     Print print = new Print();
-
 
 
     public void addNewTask(TypeOfTask.Task newTask) {
@@ -48,7 +48,7 @@ public class Manager {
     }
 
     public void showUpEpicWithSubtask() {
-        print.showUpEpicWithSubtask(epics,subtasks);
+        print.showUpEpicWithSubtask(epics, subtasks);
 
     }
 
@@ -70,15 +70,16 @@ public class Manager {
     }
 
     public void removeById(int id) {
-        TypeOfTask.Task foundTask = tasks.get(id);
+        Task foundTask = tasks.get(id);
         if (foundTask != null) {
-            System.out.println("id найдено, было удалено Task :" + foundTask);
+
+            print.idDetectedByTask(foundTask);
             tasks.remove(id);
             return;
         }
         Epic foundEpic = epics.get(id);
         if (foundEpic != null) {
-            System.out.println("id найдено, был удален Epic :" + foundEpic);
+            print.idDetectedByEpic(foundEpic);
             epics.remove(id);
             for (Integer idSubtask : subtasks.keySet()) {
                 if (subtasks.get(idSubtask).getIdEpic() == id) {
@@ -90,51 +91,51 @@ public class Manager {
         }
         Subtask foundSubtask = subtasks.get(id);
         if (foundSubtask != null) {
-            System.out.println("id найдено, был удален Subtask :" + foundSubtask);
+            print.idDetectedBySubtask(foundSubtask);
             subtasks.remove(id);
-            int idEpic= foundSubtask.getIdEpic();
+            int idEpic = foundSubtask.getIdEpic();
             epics.get(idEpic).getListOfSubtask().remove(foundSubtask);
 
 
             return;
         }
-        System.out.println("Такого id нет");
+        print.notificationNotFoundId();
+
 
     }
 
     public void searchById(int id) {
         Task foundTask = tasks.get(id);
         if (foundTask != null) {
-            System.out.println("id найдено");
-            System.out.println(foundTask);
+            print.notificationFoundId();
+            foundTask.printTask();
+
             return;
         }
         Epic foundEpic = epics.get(id);
         if (foundEpic != null) {
-            System.out.println("id найдено");
-            System.out.println(foundEpic);
+            print.notificationFoundId();
+            foundEpic.printTask();
             return;
         }
         Subtask foundSubtask = subtasks.get(id);
         if (foundSubtask != null) {
-            System.out.println("id найдено");
-            System.out.println(foundSubtask);
+            print.notificationFoundId();
+            foundSubtask.printTask();
+
+
             return;
         }
-        System.out.println("Такого id нет");
+        print.notificationNotFoundId();
+
 
     }
 
     public void listSubtaskOfEpic(Epic foundEpic) {
-        for (Integer id : epics.keySet()) {
-            if (epics.get(id).equals(foundEpic)) {
-                System.out.println(epics.get(id).getListOfSubtask());
-                return;
-            }
-        }
-        System.out.println("Такого TypeOfTask.Epic'a нет");
+        print.listSubtaskOfEpic(foundEpic, epics);
     }
-    public void upateTask(Task oldTask,Task newTask) {
+
+    public void upateTask(Task oldTask, Task newTask) {
         int id = oldTask.getId();
         newTask.setId(id);
 

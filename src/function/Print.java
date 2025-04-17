@@ -83,4 +83,45 @@ public class Print {
             System.out.println(print);
         }
     }
+
+    public void listSubtaskOfEpic(Epic foundEpic, HashMap<Integer, Epic> epics) {
+        for (Integer id : epics.keySet()) {
+            if (epics.get(id).equals(foundEpic)) {
+                System.out.println(epics.get(id).getListOfSubtask());
+                return;
+            }
+        }
+        System.out.println("Такого TypeOfTask.Epic'a нет");
+    }
+
+    public void notificationNotFoundId() {
+        System.out.println("Такого id нет");
+
+    }
+
+    public void notificationFoundId() {
+        System.out.println("id найдено");
+
+    }
+
+    public void idDetectedByTask(Task task) {
+
+        System.out.println("id найдено, было удалено " + task.getClass().getSimpleName()+":  " + task);
+    }
+
+    public void idDetectedByEpic(Epic epic) {
+        System.out.println("id найдено, было удалено " + epic.getClass().getSimpleName()+":  " + epic);
+
+
+    }
+
+    public void idDetectedBySubtask(Subtask subtask) {
+
+        System.out.println("id найдено, было удалено " + subtask.getClass().getSimpleName()+":  " + subtask);
+
+
+    }
+
+
+
 }

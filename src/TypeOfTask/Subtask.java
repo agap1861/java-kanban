@@ -16,11 +16,6 @@ public class Subtask extends TypeOfTask.Task {
 
     }
 
-
-
-
-
-
     public int getIdEpic() {
         return idEpic;
     }

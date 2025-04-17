@@ -54,6 +54,9 @@ public class Main {
         manager.showUpTask();
         manager.showUpEpic();
         manager.showUpSubtask();*/
+        System.out.println("---");
+        manager.searchById(6);
+
 
 
 
