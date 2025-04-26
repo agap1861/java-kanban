@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.ServiceUnavailableException;
+import java.util.ArrayList;
+
 
 class InMemoryTaskManagerTest {
     private static TaskManager inMemoryTaskManager;
@@ -157,6 +160,36 @@ class InMemoryTaskManagerTest {
                 "Статус у Subtask'a не поменялся");
         Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3).getStatus(), Status.DONE, "Статус у Epic'a" +
                 "не поменялся");
+    }
+    @Test
+    public void changeStatusWhenDeletedSubtask(){
+        Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.DONE,
+                5, inMemoryTaskManager.searchEpicById(3));
+        inMemoryTaskManager.updateSubtask(inMemoryTaskManager.searchSubtaskById(5),subtask1);
+        Assertions.assertEquals(Status.IN_PROGRESS,inMemoryTaskManager.searchEpicById(3).getStatus(),
+                "Статус у Epica не обновился");
+        inMemoryTaskManager.removeAllSubtask();
+        Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3).getStatus(),Status.NEW,
+                "Статус у Epica не обновился");
+
+    }
+    @Test
+    public void checkRemoveById(){
+        inMemoryTaskManager.removeTaskById(1);
+        Assertions.assertNull(inMemoryTaskManager.searchTaskById(1));
+        inMemoryTaskManager.removeEpicById(3);
+        Assertions.assertNull(inMemoryTaskManager.searchEpicById(3));
+        inMemoryTaskManager.removeSubtaskById(7);
+        Assertions.assertNull(inMemoryTaskManager.searchSubtaskById(7));
+    }
+    @Test
+    public void showListOfSubtask(){
+        ArrayList<Subtask> expected = new ArrayList<>();
+        expected.add(inMemoryTaskManager.searchSubtaskById(5));
+        expected.add(inMemoryTaskManager.searchSubtaskById(6));
+        ArrayList<Subtask> result = inMemoryTaskManager.listSubtaskOfEpic(inMemoryTaskManager.searchEpicById(3));
+        Assertions.assertEquals(expected,result,"Вывод Subtaskov по Epicu не правильно работает");
+
     }
 
 }
