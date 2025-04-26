@@ -14,9 +14,15 @@ public class Epic extends TypeOfTask.Task {
     public Epic(String nameOfEpic, String description) {
         super(nameOfEpic, description);
         status = Status.NEW;
-
         listOfSubtask = new ArrayList<>();
     }
+    public Epic(String nameOfEpic, String description,int id) {
+        super(nameOfEpic,description);
+        status = Status.NEW;
+        listOfSubtask = new ArrayList<>();
+        this.setId(id);
+    }
+
 
     @Override
     public void setStatus(Status status) {

@@ -7,22 +7,24 @@ public class Task {
 
     private int id;
     private String name;
-
-
     private Status status;
     private String description;
 
+
     public Task(String nameOfTask, String description) {
-        this.name = nameOfTask;
-        this.description = description;
-        this.status = Status.NEW;
-        this.id = CreateNewId();
+        this(nameOfTask, description, Status.NEW, CreateNewId());
     }
 
-    public Task(String nameOFTask, String description, Status status) {
+    public Task(String nameOFTask, String description, Status status){
+        this(nameOFTask, description, status, CreateNewId());
+    }
+
+
+    public Task(String nameOFTask, String description, Status status, int taskId) {
         this.name = nameOFTask;
         this.description = description;
         this.status = status;
+        this.id = taskId;
     }
 
     private static int currentId = 0;
