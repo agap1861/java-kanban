@@ -141,7 +141,6 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(inMemoryTaskManager.searchTaskById(1).getStatus(), newTask.getStatus(),
                 "Статус Task'a не поменялся");
 
-//        Epic expectedEpic = new Epic("epic1", "descriptionForEpic1 ",3);
         Subtask newSubtask = new Subtask("subtask3", "descriptionForSubtask3", Status.DONE,
                 5, inMemoryTaskManager.searchEpicById(3));
         Subtask onldSubtask = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,

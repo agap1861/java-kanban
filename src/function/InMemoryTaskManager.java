@@ -139,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task searchTaskById(int id) {
         Task foundTask = tasks.get(id);
         if(foundTask != null)
-            historyManager.add(foundTask);//тут добавил
+            historyManager.add(foundTask);
         return foundTask;
 
     }
@@ -147,7 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic searchEpicById(int id) {
         Epic foundEpic = epics.get(id);
-        historyManager.add(foundEpic);//тут добавил
+        historyManager.add(foundEpic);
         return foundEpic;
 
     }
@@ -155,7 +155,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask searchSubtaskById(int id) {
         Subtask foundSubtask = subtasks.get(id);
-        historyManager.add(foundSubtask);//тут добавил
+        historyManager.add(foundSubtask);
         return foundSubtask;
 
     }
@@ -201,7 +201,7 @@ public class InMemoryTaskManager implements TaskManager {
         newEpic.checkStatus();
     }
     @Override
-    public ArrayList<Task> getHistory() {// добавил этот метод
+    public ArrayList<Task> getHistory() {
 
         return historyManager.getHistory();
 

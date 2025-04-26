@@ -14,7 +14,6 @@ class InMemoryHistoryManagerTest {
     public void saveHistory() {
         ArrayList<Task> expected = new ArrayList<>();
         TaskManager manager = Managers.getDefault();
-//        HistoryManager historyManager = Managers.getDefaultHistory();
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW, 1);
         Task task2 = new Task("task2", "descriptionForTask2", Status.NEW, 2);
         Task task3 = new Task("task1", "descriptionForTask1", Status.NEW, 3);
