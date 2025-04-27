@@ -1,10 +1,11 @@
 package TypeOfTask;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends TypeOfTask.Task {
 
-    private ArrayList<Subtask> listOfSubtask;
+    private List<Subtask> listOfSubtask;
 
 
 
@@ -33,11 +34,11 @@ public class Epic extends TypeOfTask.Task {
         return this.status;
     }
 
-    public ArrayList<Subtask> getListOfSubtask() {
+    public List<Subtask> getListOfSubtask() {
         return listOfSubtask;
     }
 
-    public void setListOfSubtask(ArrayList<Subtask> listOfSubtask) {
+    public void setListOfSubtask(List<Subtask> listOfSubtask) {
         this.listOfSubtask = listOfSubtask;
     }
     @Override
@@ -50,7 +51,7 @@ public class Epic extends TypeOfTask.Task {
     }
 
     public  void checkStatus() {
-        ArrayList<Subtask> checkList = this.listOfSubtask;
+        List<Subtask> checkList = this.listOfSubtask;
         int size = checkList.size();
 
 

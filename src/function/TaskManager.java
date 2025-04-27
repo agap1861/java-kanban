@@ -5,7 +5,8 @@ import TypeOfTask.Subtask;
 import TypeOfTask.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
     //    void addNewTask(Task newTask);
@@ -15,11 +16,11 @@ public interface TaskManager {
 
     boolean addNewSubtask(Subtask newSubtask);
 
-    HashMap<Integer, Task> showUpTask();
+    Map<Integer, Task> showUpTask();
 
-    HashMap<Integer, Epic> showUpEpic();
+    Map<Integer, Epic> showUpEpic();
 
-    HashMap<Integer, Subtask> showUpSubtask();
+    Map<Integer, Subtask> showUpSubtask();
 
     void removeAllTask();
 
@@ -45,9 +46,9 @@ public interface TaskManager {
 
     void updateEpic(Epic oldEpic, Epic newEpic);
 
-    ArrayList<Subtask> listSubtaskOfEpic(Epic foundEpic);
+    List<Subtask> listSubtaskOfEpic(Epic foundEpic);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
 
 }
