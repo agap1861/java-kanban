@@ -12,7 +12,7 @@ class ManagersTest {
     @Test
     public void    checkInicilizetiom(){
         TaskManager manager = Managers.getDefault();
-        Assertions.assertNotNull(manager,"Готов к работе ");
+        Assertions.assertNotNull(manager);
     }
 
 

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.naming.ServiceUnavailableException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -185,10 +186,10 @@ class InMemoryTaskManagerTest {
     }
     @Test
     public void showListOfSubtask(){
-        List<Subtask> expected = new ArrayList<>();
+        Collection<Subtask> expected = new ArrayList<>();
         expected.add(inMemoryTaskManager.searchSubtaskById(5));
         expected.add(inMemoryTaskManager.searchSubtaskById(6));
-        List<Subtask> result = inMemoryTaskManager.listSubtaskOfEpic(inMemoryTaskManager.searchEpicById(3));
+        Collection<Subtask> result = inMemoryTaskManager.listSubtaskOfEpic(inMemoryTaskManager.searchEpicById(3));
         Assertions.assertEquals(expected,result,"Вывод Subtaskov по Epicu не правильно работает");
 
     }

@@ -3,9 +3,9 @@ package function;
 import TypeOfTask.Task;
 
 
-import java.util.List;
+import java.util.Collection;
 
 public interface HistoryManager {
     void add(Task task) ;
-    List<Task> getHistory();
+    Collection<Task> getHistory();
 }

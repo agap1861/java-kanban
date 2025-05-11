@@ -5,6 +5,7 @@ import TypeOfTask.Subtask;
 import TypeOfTask.Task;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +47,9 @@ public interface TaskManager {
 
     void updateEpic(Epic oldEpic, Epic newEpic);
 
-    List<Subtask> listSubtaskOfEpic(Epic foundEpic);
+    Collection<Subtask> listSubtaskOfEpic(Epic foundEpic);
 
-    List<Task> getHistory();
+    Collection<Task> getHistory();
 
 
 }

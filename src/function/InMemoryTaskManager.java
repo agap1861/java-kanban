@@ -2,10 +2,7 @@ package function;
 
 import TypeOfTask.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -164,11 +161,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> listSubtaskOfEpic(Epic foundEpic) {
-        List<Subtask> listOfSubtask = foundEpic.getListOfSubtask();
-        return listOfSubtask;
-
-
+    public Collection<Subtask> listSubtaskOfEpic(Epic foundEpic) {
+        return  foundEpic.getListOfSubtask();
     }
 
     @Override
@@ -198,14 +192,14 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic oldEpic, Epic newEpic) {
         int id = oldEpic.getId();
         epics.replace(id, newEpic);
-        List<Subtask> newListOfSubtask = oldEpic.getListOfSubtask();
+        Collection<Subtask> newListOfSubtask = oldEpic.getListOfSubtask();
         newEpic.setListOfSubtask(newListOfSubtask);
 
         newEpic.checkStatus();
     }
 
     @Override
-    public List<Task> getHistory() {
+    public Collection<Task> getHistory() {
 
         return historyManager.getHistory();
 
