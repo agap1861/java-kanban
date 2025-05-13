@@ -1,6 +1,8 @@
 package function;
 
-import typeOfTask.*;
+import type.of.task.Epic;
+import type.of.task.Subtask;
+import type.of.task.Task;
 
 import java.util.*;
 

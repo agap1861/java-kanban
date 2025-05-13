@@ -1,4 +1,4 @@
-package typeOfTask;
+package type.of.task;
 
 public enum Status {
     NEW,

@@ -1,4 +1,4 @@
-package typeOfTask;
+package type.of.task;
 
 import java.util.ArrayList;
 import java.util.Collection;

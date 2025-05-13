@@ -1,4 +1,7 @@
-import typeOfTask.*;
+import type.of.task.Epic;
+import type.of.task.Status;
+import type.of.task.Subtask;
+import type.of.task.Task;
 import function.Managers;
 import function.TaskManager;
 

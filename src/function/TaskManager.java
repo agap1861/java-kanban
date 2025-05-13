@@ -1,8 +1,8 @@
 package function;
 
-import typeOfTask.Epic;
-import typeOfTask.Subtask;
-import typeOfTask.Task;
+import type.of.task.Epic;
+import type.of.task.Subtask;
+import type.of.task.Task;
 
 import java.util.Collection;
 import java.util.Map;
