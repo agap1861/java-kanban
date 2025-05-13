@@ -1,9 +1,9 @@
 package function;
 
-import TypeOfTask.Epic;
-import TypeOfTask.Status;
-import TypeOfTask.Subtask;
-import TypeOfTask.Task;
+import typeOfTask.Epic;
+import typeOfTask.Status;
+import typeOfTask.Subtask;
+import typeOfTask.Task;
 import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.BeforeEach;

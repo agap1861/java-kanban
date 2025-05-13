@@ -1,12 +1,10 @@
 package function;
 
-import TypeOfTask.Epic;
-import TypeOfTask.Subtask;
-import TypeOfTask.Task;
+import typeOfTask.Epic;
+import typeOfTask.Subtask;
+import typeOfTask.Task;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public interface TaskManager {

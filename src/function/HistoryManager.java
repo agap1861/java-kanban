@@ -1,6 +1,6 @@
 package function;
 
-import TypeOfTask.Task;
+import typeOfTask.Task;
 
 
 import java.util.Collection;

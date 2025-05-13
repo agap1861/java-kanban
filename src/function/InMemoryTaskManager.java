@@ -1,6 +1,6 @@
 package function;
 
-import TypeOfTask.*;
+import typeOfTask.*;
 
 import java.util.*;
 

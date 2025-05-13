@@ -1,4 +1,4 @@
-package TypeOfTask;
+package typeOfTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,23 +63,23 @@ public class Epic extends Task {
             return;
 
         }
-        int done = 0;
-        int _new = 0;
+        int doneOfStatus = 0;
+        int newOfStatus = 0;
 
         for (Subtask subtask : checkList) {
 
             if (subtask.getStatus().equals(Status.DONE)) {
-                done++;
+                doneOfStatus++;
             }
             if (subtask.getStatus().equals(Status.NEW)) {
-                _new++;
+                newOfStatus++;
 
             }
 
         }
-        if (done == size) {
+        if (doneOfStatus == size) {
             this.status = Status.DONE;
-        } else if (_new == size) {
+        } else if (newOfStatus == size) {
             this.status = Status.NEW;
         } else {
             this.status = Status.IN_PROGRESS;

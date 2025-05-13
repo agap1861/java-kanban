@@ -1,6 +1,4 @@
-import TypeOfTask.*;
-import function.InMemoryHistoryManager;
-import function.InMemoryTaskManager;
+import typeOfTask.*;
 import function.Managers;
 import function.TaskManager;
 

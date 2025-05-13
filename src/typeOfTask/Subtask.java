@@ -1,4 +1,4 @@
-package TypeOfTask;
+package typeOfTask;
 
 public class Subtask extends Task {
 
