@@ -7,7 +7,7 @@ public class HandLinkedList<T> {
 
     private Node<T> head;
     private Node<T> tail;
-    private int size = 0;
+
 
     public Node<T> addLast(T element) {
         Node<T> oldTail = tail;
@@ -19,7 +19,7 @@ public class HandLinkedList<T> {
             oldTail.setNext(newNode);
         }
 
-        size++;
+
         return newNode;
     }
 
@@ -27,15 +27,16 @@ public class HandLinkedList<T> {
 
         head = null;
         tail = null;
-        size = 0;
+
     }
 
     public List<T> getDataHistory() {
         Node<T> curHead = head;
-        List<T> history = new ArrayList<>();
+
         if (curHead == null) {
-            return history;
+            return List.of();
         }
+        List<T> history = new ArrayList<>();
         history.add(curHead.getData());
         while (curHead.getNext() != null) {
 
@@ -53,62 +54,22 @@ public class HandLinkedList<T> {
         if (removeNode.getPrev() == null) {
             Node<T> newHead = removeNode.getNext();
             head = newHead;
-            size--;
+
             newHead.setPrev(null);
         } else if (removeNode.getNext() == null) {
             Node<T> newTail = removeNode.getPrev();
             tail = newTail;
-            size--;
+
             newTail.setNext(null);
         } else {
             Node<T> prevNode = removeNode.getPrev();
             Node<T> nextNode = removeNode.getNext();
             prevNode.setNext(nextNode);
             nextNode.setPrev(prevNode);
-            size--;
+
         }
 
 
-
-
-
-
-      /*  if (list.getSize() == 1) {
-            list.clear();
-            return;
-        }
-        if (removeNode.getPrev()==null){
-            Node<Task> newHead = removeNode.getNext();
-            list.setHead(newHead);
-            list.setSize(list.getSize()-1);
-            newHead.setPrev(null);
-            list.getDataHistory().remove(removeNode.getData());
-
-        } else if (removeNode.getNext()==null) {
-            Node<Task> newTail = removeNode.getPrev();
-            list.setTail(newTail);
-            list.setSize(list.getSize()-1);
-            newTail.setNext(null);
-            list.getDataHistory().remove(removeNode.getData());
-
-        }else {
-            Node<Task> prevNode = removeNode.getPrev();
-            Node<Task> nextNode = removeNode.getNext();
-            prevNode.setNext(nextNode);
-            nextNode.setPrev(prevNode);
-            list.setSize(list.getSize()-1);
-            list.getDataHistory().remove(removeNode.getData());
-        }*/
-
-
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public Node<T> getTail() {
