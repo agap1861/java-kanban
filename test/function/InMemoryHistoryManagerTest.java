@@ -1,11 +1,15 @@
 package function;
 
+import TypeOfTask.Epic;
 import TypeOfTask.Status;
+import TypeOfTask.Subtask;
 import TypeOfTask.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +17,7 @@ class InMemoryHistoryManagerTest {
     @Test
     public void saveHistory() {
         ArrayList<Task> expected = new ArrayList<>();
+
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW, 1);
         Task task2 = new Task("task2", "descriptionForTask2", Status.NEW, 2);
@@ -36,45 +41,47 @@ class InMemoryHistoryManagerTest {
         manager.addNewTask(task8);
         manager.addNewTask(task9);
         manager.addNewTask(task10);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так, ArrayList не равны");
+        manager.addNewTask(task11);
+        manager.addNewTask(task12);
+        Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 13);
+        Epic epic2 = new Epic("epic2", "descriptionForEpic2 ", 14);
+        Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
+                15, epic1);
+        Subtask subtask2 = new Subtask("subtask2", "descriptionForSubtask2", Status.NEW,
+                16, epic1);
+        Subtask subtask3 = new Subtask("subtask3", "descriptionForSubtask3", Status.NEW,
+                17, epic2);
+        manager.addNewEpic(epic1);
+        manager.addNewEpic(epic2);
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        manager.addNewSubtask(subtask3);
         manager.searchTaskById(1);
         expected.add(task1);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так, ArrayList не равны");
+        manager.searchEpicById(1);
+        Assertions.assertEquals(expected,manager.getHistory());
+        expected.clear();
         manager.searchTaskById(2);
-        expected.add(task2);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так, ArrayList не равны");
         manager.searchTaskById(3);
-        expected.add(task3);
         manager.searchTaskById(4);
-        expected.add(task4);
         manager.searchTaskById(5);
+        manager.searchEpicById(13);
+        expected.add(task1);
+        expected.add(task2);
+        expected.add(task3);
+        expected.add(task4);
         expected.add(task5);
-        manager.searchTaskById(6);
-        expected.add(task6);
-        manager.searchTaskById(7);
-        expected.add(task7);
-        manager.searchTaskById(8);
-        expected.add(task8);
-        manager.searchTaskById(9);
-        expected.add(task9);
-        manager.searchTaskById(10);
-        expected.add(task10);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так," +
-                " скорее всего проблема с переполнением");
-        manager.addNewTask(task11);
-        manager.searchTaskById(11);
+        expected.add(epic1);
+        Assertions.assertEquals(expected,manager.getHistory(),"История не работает");
+        manager.searchTaskById(1);
         expected.removeFirst();
-        expected.add(task11);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так," +
-                " скорее всего проблема с переполнением");
-        manager.addNewTask(task12);
-        manager.searchTaskById(12);
-        expected.removeFirst();
-        expected.add(task12);
-        Assertions.assertEquals(expected, manager.getHistory(), "Что то не так," +
-                " скорее всего проблема с переполнением");
+        expected.add(task1);
+        Assertions.assertEquals(expected,manager.getHistory(),"Проблема с дублями в истории");
+
+
 
 
     }
+
 
 }

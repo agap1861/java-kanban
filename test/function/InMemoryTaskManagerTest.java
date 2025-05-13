@@ -10,9 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.naming.ServiceUnavailableException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 class InMemoryTaskManagerTest {
@@ -192,6 +190,48 @@ class InMemoryTaskManagerTest {
         Collection<Subtask> result = inMemoryTaskManager.listSubtaskOfEpic(inMemoryTaskManager.searchEpicById(3));
         Assertions.assertEquals(expected,result,"Вывод Subtaskov по Epicu не правильно работает");
 
+    }
+    @Test
+    public void shoudCorrecltyRemoveSubtaskWhenRemoveEpic(){
+        Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 3);
+        Epic epic2 = new Epic("epic2", "descriptionForEpic2 ", 4);
+        InMemoryTaskManager manager =new InMemoryTaskManager(Managers.getDefaultHistory());
+        Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
+                5, epic1);
+        Subtask subtask2 = new Subtask("subtask2", "descriptionForSubtask2", Status.NEW,
+                6, epic1);
+        Subtask subtask3 = new Subtask("subtask3", "descriptionForSubtask3", Status.NEW,
+                7, epic2);
+        manager.addNewEpic(epic1);
+        manager.addNewEpic(epic2);
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        manager.addNewSubtask(subtask3);
+        Map<Integer,Subtask> subtasks = new HashMap<>();
+        subtasks.put(subtask3.getId(),subtask3);
+        manager.removeEpicById(3);
+        Assertions.assertEquals(subtasks,manager.showUpSubtask(),"Удаление subtask'ov при удалении " +
+                "epic'ov не правильное ");
+
+
+    }
+    @Test
+    public void shouldCorrectlyRemoveSubtaskInEpicWhenRemoveSubtask(){
+        Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 3);
+
+        InMemoryTaskManager manager =new InMemoryTaskManager(Managers.getDefaultHistory());
+        Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
+                5, epic1);
+        Subtask subtask2 = new Subtask("subtask2", "descriptionForSubtask2", Status.NEW,
+                6, epic1);
+        manager.addNewEpic(epic1);
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        manager.removeSubtaskById(5);
+        List<Subtask> subtasks = new ArrayList<>();
+        subtasks.add(subtask2);
+        Assertions.assertEquals(manager.listSubtaskOfEpic(epic1),subtasks,"При удалении Subtas'ov не" +
+                " удаляются в epic'e");
     }
 
 }

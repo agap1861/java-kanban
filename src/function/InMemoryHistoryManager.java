@@ -2,23 +2,47 @@ package function;
 
 import TypeOfTask.Task;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> history = new ArrayList<>();
-    private static final  int SIZE_OF_LIST = 10;
+    private List<Task> history = new LinkedList<>();
+//    private static final int SIZE_OF_LIST = 10;
+    private HandLinkedList<Task> list = new HandLinkedList<>();
+    private Map<Integer, Node<Task>> mapHistory = new HashMap<>();
+
     @Override
     public void add(Task task) {
-        if (history.size() == SIZE_OF_LIST) {
-            history.removeFirst();
+        int idTask = task.getId();
+
+        if (mapHistory.containsKey(idTask)) {
+            list.removeNode(mapHistory.get(idTask));
+            mapHistory.remove(idTask);
+            Node<Task> newNode = list.addLast(task);
+            mapHistory.put(idTask,newNode);
+            return;
+
         }
-        history.add(task);
-
+        Node<Task> newNode = list.addLast(task);
+        mapHistory.put(idTask, newNode);
     }
+
     @Override
-    public List<Task> getHistory(){
-
-        return history;
+    public Collection<Task> getHistory() {
+        return list.getDataHistory();
     }
+
+    @Override
+    public void remove(int id) {
+        if(mapHistory.containsKey(id)){
+            Node<Task> foundNode = mapHistory.get(id);
+            mapHistory.remove(id);
+            list.removeNode(foundNode);
+        }
+
+    }
+
+
+
+
+
 }
