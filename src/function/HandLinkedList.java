@@ -52,17 +52,17 @@ public class HandLinkedList<T> {
             clear();
             return;
         }
-        if (removeNode.getPrev() == null){
+        if (removeNode.getPrev() == null) {
             Node<T> newHead = removeNode.getNext();
             head = newHead;
             size--;
             newHead.setPrev(null);
-        } else if (removeNode.getNext()==null) {
+        } else if (removeNode.getNext() == null) {
             Node<T> newTail = removeNode.getPrev();
             tail = newTail;
             size--;
             newTail.setNext(null);
-        }else {
+        } else {
             Node<T> prevNode = removeNode.getPrev();
             Node<T> nextNode = removeNode.getNext();
             prevNode.setNext(nextNode);

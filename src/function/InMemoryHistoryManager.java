@@ -5,8 +5,6 @@ import TypeOfTask.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> history = new LinkedList<>();
-//    private static final int SIZE_OF_LIST = 10;
     private HandLinkedList<Task> list = new HandLinkedList<>();
     private Map<Integer, Node<Task>> mapHistory = new HashMap<>();
 
@@ -18,7 +16,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             list.removeNode(mapHistory.get(idTask));
             mapHistory.remove(idTask);
             Node<Task> newNode = list.addLast(task);
-            mapHistory.put(idTask,newNode);
+            mapHistory.put(idTask, newNode);
             return;
 
         }
@@ -33,16 +31,13 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        if(mapHistory.containsKey(id)){
+        if (mapHistory.containsKey(id)) {
             Node<Task> foundNode = mapHistory.get(id);
             mapHistory.remove(id);
             list.removeNode(foundNode);
         }
 
     }
-
-
-
 
 
 }

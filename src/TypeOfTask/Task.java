@@ -15,7 +15,7 @@ public class Task {
         this(nameOfTask, description, Status.NEW, CreateNewId());
     }
 
-    public Task(String nameOFTask, String description, Status status){
+    public Task(String nameOFTask, String description, Status status) {
         this(nameOFTask, description, status, CreateNewId());
     }
 
@@ -84,7 +84,6 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
-
 
 
 }

@@ -2,12 +2,10 @@ package TypeOfTask;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Epic extends Task {
 
     private Collection<Subtask> listOfSubtask;
-
 
 
     private Status status;
@@ -18,8 +16,9 @@ public class Epic extends Task {
         status = Status.NEW;
         listOfSubtask = new ArrayList<>();
     }
-    public Epic(String nameOfEpic, String description,int id) {
-        super(nameOfEpic,description);
+
+    public Epic(String nameOfEpic, String description, int id) {
+        super(nameOfEpic, description);
         status = Status.NEW;
         listOfSubtask = new ArrayList<>();
         this.setId(id);
@@ -30,8 +29,9 @@ public class Epic extends Task {
     public void setStatus(Status status) {
         System.out.println("Нельзя менять статус Epic'a");
     }
+
     @Override
-    public Status getStatus(){
+    public Status getStatus() {
         return this.status;
     }
 
@@ -42,25 +42,25 @@ public class Epic extends Task {
     public void setListOfSubtask(Collection<Subtask> listOfSubtask) {
         this.listOfSubtask = listOfSubtask;
     }
-    @Override
-    public String toString(){
 
-        String result = "name={"+this.getName() +"} id={"+this.getId()+"} description={"+this.getDescription()+
-                "} Status={"+ this.getStatus()+"}";
+    @Override
+    public String toString() {
+
+        String result = "name={" + this.getName() + "} id={" + this.getId() + "} description={" + this.getDescription() +
+                "} Status={" + this.getStatus() + "}";
         return result;
 
     }
 
-    public  void checkStatus() {
+    public void checkStatus() {
         Collection<Subtask> checkList = this.listOfSubtask;
         int size = checkList.size();
 
 
-
         if (size == 0) {
 
-            this.status=Status.NEW;
-            return ;
+            this.status = Status.NEW;
+            return;
 
         }
         int done = 0;
@@ -78,14 +78,13 @@ public class Epic extends Task {
 
         }
         if (done == size) {
-            this.status=Status.DONE;
+            this.status = Status.DONE;
         } else if (_new == size) {
-            this.status=Status.NEW;
+            this.status = Status.NEW;
         } else {
-            this.status=Status.IN_PROGRESS;
+            this.status = Status.IN_PROGRESS;
 
         }
-
 
 
     }

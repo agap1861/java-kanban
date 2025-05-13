@@ -6,12 +6,7 @@ import TypeOfTask.Subtask;
 import TypeOfTask.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
     @Test
@@ -59,7 +54,7 @@ class InMemoryHistoryManagerTest {
         manager.searchTaskById(1);
         expected.add(task1);
         manager.searchEpicById(1);
-        Assertions.assertEquals(expected,manager.getHistory());
+        Assertions.assertEquals(expected, manager.getHistory());
         expected.clear();
         manager.searchTaskById(2);
         manager.searchTaskById(3);
@@ -72,13 +67,11 @@ class InMemoryHistoryManagerTest {
         expected.add(task4);
         expected.add(task5);
         expected.add(epic1);
-        Assertions.assertEquals(expected,manager.getHistory(),"История не работает");
+        Assertions.assertEquals(expected, manager.getHistory(), "История не работает");
         manager.searchTaskById(1);
         expected.removeFirst();
         expected.add(task1);
-        Assertions.assertEquals(expected,manager.getHistory(),"Проблема с дублями в истории");
-
-
+        Assertions.assertEquals(expected, manager.getHistory(), "Проблема с дублями в истории");
 
 
     }

@@ -1,6 +1,6 @@
 package function;
 
-public class Node<E>{
+public class Node<E> {
     private Node<E> prev;
     private E data;
     private Node<E> next;

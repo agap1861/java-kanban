@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.naming.ServiceUnavailableException;
 import java.util.*;
 
 
@@ -161,20 +160,22 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3).getStatus(), Status.DONE, "Статус у Epic'a" +
                 "не поменялся");
     }
+
     @Test
-    public void changeStatusWhenDeletedSubtask(){
+    public void changeStatusWhenDeletedSubtask() {
         Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.DONE,
                 5, inMemoryTaskManager.searchEpicById(3));
-        inMemoryTaskManager.updateSubtask(inMemoryTaskManager.searchSubtaskById(5),subtask1);
-        Assertions.assertEquals(Status.IN_PROGRESS,inMemoryTaskManager.searchEpicById(3).getStatus(),
+        inMemoryTaskManager.updateSubtask(inMemoryTaskManager.searchSubtaskById(5), subtask1);
+        Assertions.assertEquals(Status.IN_PROGRESS, inMemoryTaskManager.searchEpicById(3).getStatus(),
                 "Статус у Epica не обновился");
         inMemoryTaskManager.removeAllSubtask();
-        Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3).getStatus(),Status.NEW,
+        Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3).getStatus(), Status.NEW,
                 "Статус у Epica не обновился");
 
     }
+
     @Test
-    public void checkRemoveById(){
+    public void checkRemoveById() {
         inMemoryTaskManager.removeTaskById(1);
         Assertions.assertNull(inMemoryTaskManager.searchTaskById(1));
         inMemoryTaskManager.removeEpicById(3);
@@ -182,20 +183,22 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.removeSubtaskById(7);
         Assertions.assertNull(inMemoryTaskManager.searchSubtaskById(7));
     }
+
     @Test
-    public void showListOfSubtask(){
+    public void showListOfSubtask() {
         Collection<Subtask> expected = new ArrayList<>();
         expected.add(inMemoryTaskManager.searchSubtaskById(5));
         expected.add(inMemoryTaskManager.searchSubtaskById(6));
         Collection<Subtask> result = inMemoryTaskManager.listSubtaskOfEpic(inMemoryTaskManager.searchEpicById(3));
-        Assertions.assertEquals(expected,result,"Вывод Subtaskov по Epicu не правильно работает");
+        Assertions.assertEquals(expected, result, "Вывод Subtaskov по Epicu не правильно работает");
 
     }
+
     @Test
-    public void shoudCorrecltyRemoveSubtaskWhenRemoveEpic(){
+    public void shoudCorrecltyRemoveSubtaskWhenRemoveEpic() {
         Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 3);
         Epic epic2 = new Epic("epic2", "descriptionForEpic2 ", 4);
-        InMemoryTaskManager manager =new InMemoryTaskManager(Managers.getDefaultHistory());
+        InMemoryTaskManager manager = new InMemoryTaskManager(Managers.getDefaultHistory());
         Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
                 5, epic1);
         Subtask subtask2 = new Subtask("subtask2", "descriptionForSubtask2", Status.NEW,
@@ -207,19 +210,20 @@ class InMemoryTaskManagerTest {
         manager.addNewSubtask(subtask1);
         manager.addNewSubtask(subtask2);
         manager.addNewSubtask(subtask3);
-        Map<Integer,Subtask> subtasks = new HashMap<>();
-        subtasks.put(subtask3.getId(),subtask3);
+        Map<Integer, Subtask> subtasks = new HashMap<>();
+        subtasks.put(subtask3.getId(), subtask3);
         manager.removeEpicById(3);
-        Assertions.assertEquals(subtasks,manager.showUpSubtask(),"Удаление subtask'ov при удалении " +
+        Assertions.assertEquals(subtasks, manager.showUpSubtask(), "Удаление subtask'ov при удалении " +
                 "epic'ov не правильное ");
 
 
     }
+
     @Test
-    public void shouldCorrectlyRemoveSubtaskInEpicWhenRemoveSubtask(){
+    public void shouldCorrectlyRemoveSubtaskInEpicWhenRemoveSubtask() {
         Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 3);
 
-        InMemoryTaskManager manager =new InMemoryTaskManager(Managers.getDefaultHistory());
+        InMemoryTaskManager manager = new InMemoryTaskManager(Managers.getDefaultHistory());
         Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
                 5, epic1);
         Subtask subtask2 = new Subtask("subtask2", "descriptionForSubtask2", Status.NEW,
@@ -230,7 +234,7 @@ class InMemoryTaskManagerTest {
         manager.removeSubtaskById(5);
         List<Subtask> subtasks = new ArrayList<>();
         subtasks.add(subtask2);
-        Assertions.assertEquals(manager.listSubtaskOfEpic(epic1),subtasks,"При удалении Subtas'ov не" +
+        Assertions.assertEquals(manager.listSubtaskOfEpic(epic1), subtasks, "При удалении Subtas'ov не" +
                 " удаляются в epic'e");
     }
 
