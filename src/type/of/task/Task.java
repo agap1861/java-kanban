@@ -12,11 +12,11 @@ public class Task {
 
 
     public Task(String nameOfTask, String description) {
-        this(nameOfTask, description, Status.NEW, CreateNewId());
+        this(nameOfTask, description, Status.NEW, createNewId());
     }
 
     public Task(String nameOFTask, String description, Status status) {
-        this(nameOFTask, description, status, CreateNewId());
+        this(nameOFTask, description, status, createNewId());
     }
 
 
@@ -29,7 +29,7 @@ public class Task {
 
     private static int currentId = 0;
 
-    private static int CreateNewId() {
+    private static int createNewId() {
         currentId++;
         return currentId;
     }
