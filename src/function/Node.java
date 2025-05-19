@@ -12,6 +12,8 @@ public class Node<E> {
         this.next = next;
     }
 
+
+
     public void setNext(Node<E> next) {
         this.next = next;
     }

@@ -1,6 +1,7 @@
 package function;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class HandLinkedList<T> {
@@ -22,7 +23,6 @@ public class HandLinkedList<T> {
 
         return newNode;
     }
-
     public void clear() {
 
         head = null;

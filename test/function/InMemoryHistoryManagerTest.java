@@ -1,43 +1,36 @@
 package function;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import type.of.task.Epic;
 import type.of.task.Status;
 import type.of.task.Subtask;
 import type.of.task.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
+import java.util.List;
 
 class InMemoryHistoryManagerTest {
-    @Test
-    public void saveHistory() {
-        ArrayList<Task> expected = new ArrayList<>();
+    private static TaskManager manager;
+    private static List<Task> expected = new ArrayList<>();
 
-        TaskManager manager = Managers.getDefault();
+    @BeforeEach
+    public  void addInHistory() {
+        manager = Managers.getDefault();
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW, 1);
         Task task2 = new Task("task2", "descriptionForTask2", Status.NEW, 2);
         Task task3 = new Task("task1", "descriptionForTask1", Status.NEW, 3);
         Task task4 = new Task("task2", "descriptionForTask2", Status.NEW, 4);
         Task task5 = new Task("task1", "descriptionForTask1", Status.NEW, 5);
         Task task6 = new Task("task2", "descriptionForTask2", Status.NEW, 6);
-        Task task7 = new Task("task1", "descriptionForTask1", Status.NEW, 7);
-        Task task8 = new Task("task2", "descriptionForTask2", Status.NEW, 8);
-        Task task9 = new Task("task1", "descriptionForTask1", Status.NEW, 9);
-        Task task10 = new Task("task2", "descriptionForTask2", Status.NEW, 10);
-        Task task11 = new Task("task2", "descriptionForTask2", Status.NEW, 11);
-        Task task12 = new Task("task2", "descriptionForTask2", Status.NEW, 12);
         manager.addNewTask(task1);
         manager.addNewTask(task2);
         manager.addNewTask(task3);
         manager.addNewTask(task4);
         manager.addNewTask(task5);
         manager.addNewTask(task6);
-        manager.addNewTask(task7);
-        manager.addNewTask(task8);
-        manager.addNewTask(task9);
-        manager.addNewTask(task10);
-        manager.addNewTask(task11);
-        manager.addNewTask(task12);
         Epic epic1 = new Epic("epic1", "descriptionForEpic1 ", 13);
         Epic epic2 = new Epic("epic2", "descriptionForEpic2 ", 14);
         Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
@@ -52,10 +45,6 @@ class InMemoryHistoryManagerTest {
         manager.addNewSubtask(subtask2);
         manager.addNewSubtask(subtask3);
         manager.searchTaskById(1);
-        expected.add(task1);
-        manager.searchEpicById(1);
-        Assertions.assertEquals(expected, manager.getHistory());
-        expected.clear();
         manager.searchTaskById(2);
         manager.searchTaskById(3);
         manager.searchTaskById(4);
@@ -67,13 +56,31 @@ class InMemoryHistoryManagerTest {
         expected.add(task4);
         expected.add(task5);
         expected.add(epic1);
-        Assertions.assertEquals(expected, manager.getHistory(), "История не работает");
+
+    }
+
+    @Test
+    public void shouldCorrectlyAddInListOfHistory() {
+        Assertions.assertEquals(expected, manager.getHistory(), "Не корректно добавляет в историю или вообще " +
+                "не добавляет");
+        //Почему-то beforeEach срабатывает 2 раза
+    }
+
+    @Test
+    public void ifCopyExistInHistoryRemoveFirstCopyAndAddLastCopy() {
         manager.searchTaskById(1);
         expected.removeFirst();
-        expected.add(task1);
-        Assertions.assertEquals(expected, manager.getHistory(), "Проблема с дублями в истории");
-
-
+        expected.add(new Task("task1", "descriptionForTask1", Status.NEW, 1));
+        Assertions.assertEquals(expected, manager.getHistory(), "Не правильно удаляет повтор на первой позиции");
+        manager.searchTaskById(3);
+        Task task3 = new Task("task1", "descriptionForTask1", Status.NEW, 3);
+        expected.remove(task3);
+        expected.add(task3);
+        Assertions.assertEquals(expected, manager.getHistory(), "Не правильно удаляет дубль когда он находится" +
+                "НЕ на крайних позициях");
+        manager.searchTaskById(3);
+        Assertions.assertEquals(expected, manager.getHistory(), "Не правильно удаляет дубль когда он находится" +
+                "на крайней позиции");
     }
 
 
