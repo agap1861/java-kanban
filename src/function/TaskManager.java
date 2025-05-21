@@ -1,15 +1,13 @@
 package function;
 
-import TypeOfTask.Epic;
-import TypeOfTask.Subtask;
-import TypeOfTask.Task;
+import type.of.task.Epic;
+import type.of.task.Subtask;
+import type.of.task.Task;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 public interface TaskManager {
-    //    void addNewTask(Task newTask);
     boolean addNewTask(Task newTask);
 
     boolean addNewEpic(Epic newEpic);
@@ -40,15 +38,15 @@ public interface TaskManager {
 
     Subtask searchSubtaskById(int id);
 
-    void upateTask(Task oldTask, Task newTask);
+    void updateTask(Task oldTask, Task newTask);
 
     void updateSubtask(Subtask oldSubtask, Subtask newSubtask);
 
     void updateEpic(Epic oldEpic, Epic newEpic);
 
-    List<Subtask> listSubtaskOfEpic(Epic foundEpic);
+    Collection<Subtask> listSubtaskOfEpic(Epic foundEpic);
 
-    List<Task> getHistory();
+    Collection<Task> getHistory();
 
 
 }

@@ -1,11 +1,16 @@
 package function;
 
-import TypeOfTask.Task;
+import type.of.task.Task;
 
 
-import java.util.List;
+import java.util.Collection;
 
 public interface HistoryManager {
-    void add(Task task) ;
-    List<Task> getHistory();
+    void add(Task task);
+
+    Collection<Task> getHistory();
+
+    void remove(int id);
+
+
 }
