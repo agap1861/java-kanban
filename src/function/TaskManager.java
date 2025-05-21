@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface TaskManager {
-    //    void addNewTask(Task newTask);
     boolean addNewTask(Task newTask);
 
     boolean addNewEpic(Epic newEpic);
@@ -39,7 +38,7 @@ public interface TaskManager {
 
     Subtask searchSubtaskById(int id);
 
-    void upateTask(Task oldTask, Task newTask);
+    void updateTask(Task oldTask, Task newTask);
 
     void updateSubtask(Subtask oldSubtask, Subtask newSubtask);
 

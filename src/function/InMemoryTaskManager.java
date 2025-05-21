@@ -191,7 +191,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void upateTask(Task oldTask, Task newTask) {
+    public void updateTask(Task oldTask, Task newTask) {
         int id = oldTask.getId();
         newTask.setId(id);
 

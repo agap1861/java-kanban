@@ -18,7 +18,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             Node<Task> newNode = list.addLast(task);
             mapHistory.put(idTask, newNode);
             return;
-
         }
         Node<Task> newNode = list.addLast(task);
         mapHistory.put(idTask, newNode);
@@ -38,6 +37,4 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
     }
-
-
 }

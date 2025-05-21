@@ -126,14 +126,16 @@ class InMemoryTaskManagerTest {
         Assertions.assertEquals(inMemoryTaskManager.searchTaskById(1), expectedTask, "Поиск Task'ov не работает");
 
     }
+
     @Test
-    public void searchEpic(){
+    public void searchEpic() {
         Epic expectedEpic = new Epic("epic1", "descriptionForEpic1 ", 3);
         Assertions.assertEquals(inMemoryTaskManager.searchEpicById(3), expectedEpic, "Поиск Epic'ov " +
                 "не работает");
     }
+
     @Test
-    public void searchSubtask(){
+    public void searchSubtask() {
         Subtask expectedSubtask = new Subtask("subtask3", "descriptionForSubtask3", Status.NEW,
                 7, inMemoryTaskManager.searchEpicById(3));
         Assertions.assertEquals(inMemoryTaskManager.searchSubtaskById(7), expectedSubtask,
@@ -146,7 +148,7 @@ class InMemoryTaskManagerTest {
                 " спринта", Status.IN_PROGRESS, 1);
         Task oldTask = new Task("task1", "descriptionForTask1" +
                 " спринта", Status.NEW, 1);
-        inMemoryTaskManager.upateTask(oldTask, newTask);
+        inMemoryTaskManager.updateTask(oldTask, newTask);
         Assertions.assertEquals(inMemoryTaskManager.searchTaskById(1).getStatus(), newTask.getStatus(),
                 "Статус Task'a не поменялся");
 

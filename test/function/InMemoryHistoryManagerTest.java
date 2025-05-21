@@ -1,6 +1,5 @@
 package function;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import type.of.task.Epic;
 import type.of.task.Status;
@@ -14,11 +13,12 @@ import java.util.List;
 
 class InMemoryHistoryManagerTest {
     private static TaskManager manager;
-    private static List<Task> expected = new ArrayList<>();
+    private static List<Task> expected;
 
     @BeforeEach
-    public  void addInHistory() {
+    public void addInHistory() {
         manager = Managers.getDefault();
+        expected = new ArrayList<>();
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW, 1);
         Task task2 = new Task("task2", "descriptionForTask2", Status.NEW, 2);
         Task task3 = new Task("task1", "descriptionForTask1", Status.NEW, 3);
@@ -63,7 +63,6 @@ class InMemoryHistoryManagerTest {
     public void shouldCorrectlyAddInListOfHistory() {
         Assertions.assertEquals(expected, manager.getHistory(), "Не корректно добавляет в историю или вообще " +
                 "не добавляет");
-        //Почему-то beforeEach срабатывает 2 раза
     }
 
     @Test
