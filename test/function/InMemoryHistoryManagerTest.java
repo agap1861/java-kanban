@@ -82,5 +82,4 @@ class InMemoryHistoryManagerTest {
                 "на крайней позиции");
     }
 
-
 }

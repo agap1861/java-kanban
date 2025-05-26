@@ -8,6 +8,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private HandLinkedList<Task> list = new HandLinkedList<>();
     private Map<Integer, Node<Task>> mapHistory = new HashMap<>();
 
+
     @Override
     public void add(Task task) {
         int idTask = task.getId();

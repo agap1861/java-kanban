@@ -33,6 +33,12 @@ public class Subtask extends Task {
         return idEpic;
     }
 
+    @Override
+    public String toString() {
+        return this.getId() + "," + this.getClass().getSimpleName() + "," + this.getName() + "," + this.getStatus() + "," +
+                this.getDescription() + "," + this.getIdEpic();
+    }
+
     public void setIdEpic(Epic epic) {
         this.idEpic = epic.getId();
     }
