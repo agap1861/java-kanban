@@ -21,7 +21,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 autoSave.createNewFile();
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new ManagerSaveException("Ошибка при сохранение", e);
             }
         }
     }
@@ -72,9 +72,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new ManagerLoadException("Ошибка при сохранение");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ManagerLoadException("Ошибка при сохранение");
         }
 
     }
@@ -89,8 +89,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Status status = Status.toStatusFromString(split[3]);
         String description = split[4];
         if (split.length == 5) {
-            Task task = new Task(nameOfTask, description, status, id);
+
             if (typeOfTask.equals("Task")) {
+                Task task = new Task(nameOfTask, description, status, id);
                 return task;
 
             } else {
