@@ -19,7 +19,6 @@ public class Task {
         this(nameOFTask, description, status, createNewId());
     }
 
-
     public Task(String nameOFTask, String description, Status status, int taskId) {
         this.name = nameOFTask;
         this.description = description;
@@ -48,8 +47,8 @@ public class Task {
     }
 
     public String toString() {
-        String result = "name={" + this.name + "} id={" + this.id + "} description={" + this.description + "} Status={" +
-                this.status + "}";
+        String result = this.getId() + "," + this.getClass().getSimpleName() + "," + this.getName() + "," + this.getStatus() + "," +
+                this.getDescription();
         return result;
     }
 

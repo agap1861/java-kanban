@@ -24,6 +24,16 @@ public class Epic extends Task {
         this.setId(id);
     }
 
+    private Epic(String nameOFTask, String description, Status status, int taskId) {
+        super(nameOFTask, description, status, taskId);
+        listOfSubtask = new ArrayList<>();
+
+
+    }
+
+    public static Epic setEpicForLoading(String name, String description, Status status, int id) {
+        return new Epic(name, description, status, id);
+    }
 
     @Override
     public void setStatus(Status status) {
@@ -43,14 +53,6 @@ public class Epic extends Task {
         this.listOfSubtask = listOfSubtask;
     }
 
-    @Override
-    public String toString() {
-
-        String result = "name={" + this.getName() + "} id={" + this.getId() + "} description={" + this.getDescription() +
-                "} Status={" + this.getStatus() + "}";
-        return result;
-
-    }
 
     public void checkStatus() {
         Collection<Subtask> checkList = this.listOfSubtask;
