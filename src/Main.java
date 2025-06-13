@@ -6,7 +6,7 @@ import function.Managers;
 import function.TaskManager;
 
 public class Main {
-    public static void main(String[] args) {
+ /*   public static void main(String[] args) {
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW);
         Task task2 = new Task("task2", "descriptionForTask2", Status.NEW);
         Epic epic1 = new Epic("epic1", "descriptionForEpic1 ");
@@ -38,5 +38,5 @@ public class Main {
         manager.removeEpicById(epic1.getId());
         System.out.println(manager.getHistory());
 
-    }
+    }*/
 }
