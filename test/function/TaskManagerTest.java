@@ -272,18 +272,89 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Assertions.assertFalse(flag);
 
     }
+
     @Test
-    public void shouldCorrectlySumDurationInEpic(){
-       Duration expectedDuration = taskManager.searchSubtaskById(6).getDuration()
-               .plus(taskManager.searchSubtaskById(7).getDuration());
-       Assertions.assertEquals(expectedDuration,taskManager.searchEpicById(4).getDuration());
+    public void shouldCorrectlySumDurationInEpic() {
+        Duration expectedDuration = taskManager.searchSubtaskById(6).getDuration()
+                .plus(taskManager.searchSubtaskById(7).getDuration());
+        Assertions.assertEquals(expectedDuration, taskManager.searchEpicById(4).getDuration());
     }
+
     @Test
-    public void shouldCorrectlyChangedDurationInEpic(){
+    public void shouldCorrectlyChangedDurationInEpic() {
         Duration expectedDuration = taskManager.searchSubtaskById(6).getDuration();
         taskManager.removeSubtaskById(7);
-        Assertions.assertEquals(expectedDuration,taskManager.searchEpicById(4).getDuration());
+        Assertions.assertEquals(expectedDuration, taskManager.searchEpicById(4).getDuration());
     }
 
 
+    @Test
+    public void addTheEarlyDateAndCheckedWorkTreeSet() {
+
+        Epic priorityEpic = new Epic("epic8", "descriptionForEpic8 ", 8);
+
+        Subtask prioritySubTask = new Subtask("subtask9", "descriptionForSubtask9", Status.NEW, 50,
+                LocalDateTime.of(2000, Month.JANUARY, 1, 1, 1), 9, priorityEpic);
+
+        taskManager.addNewEpic(priorityEpic);
+        taskManager.addNewSubtask(prioritySubTask);
+
+        var actualPriority = taskManager.getPrioritizedTasks().first();
+        Assertions.assertEquals(priorityEpic.getId(), actualPriority.getId());
+    }
+
+
+    @Test
+    public void addEarlyDateAndAfterRemoveShouldBeCurrantTask() {
+
+        var currentPriority = taskManager.getPrioritizedTasks().first();
+
+        Epic priorityEpic = new Epic("epic8", "descriptionForEpic8 ", 8);
+
+        Subtask prioritySubTask1 = new Subtask("subtask9", "descriptionForSubtask9", Status.NEW, 0,
+                LocalDateTime.of(2000, Month.JANUARY, 1, 1, 1), 9, priorityEpic);
+
+        Subtask prioritySubTask2 = new Subtask("subtask9", "descriptionForSubtask9", Status.NEW, 0,
+                LocalDateTime.of(2000, Month.JANUARY, 1, 1, 2), 10, priorityEpic);
+
+        taskManager.addNewEpic(priorityEpic);
+        taskManager.addNewSubtask(prioritySubTask1);
+        taskManager.addNewSubtask(prioritySubTask2);
+
+
+        var actualPriority = taskManager.getPrioritizedTasks().first();
+        Assertions.assertEquals(priorityEpic.getId(), actualPriority.getId());
+
+        taskManager.removeEpicById(8);
+
+        actualPriority = taskManager.getPrioritizedTasks().first();
+        Assertions.assertEquals(currentPriority.getId(), actualPriority.getId());
+    }
+
+
+    @Test
+    public void afterRemoveSubtaskShouldBeChangePriority() {
+
+        Epic priorityEpic = new Epic("epic8", "descriptionForEpic8 ", 8);
+
+        Subtask prioritySubTask1 = new Subtask("subtask9", "descriptionForSubtask9", Status.NEW, 0,
+                LocalDateTime.of(2000, Month.JANUARY, 1, 1, 1), 9, priorityEpic);
+
+        Subtask prioritySubTask2 = new Subtask("subtask9", "descriptionForSubtask9", Status.NEW, 0,
+                LocalDateTime.of(2000, Month.JANUARY, 1, 1, 2), 10, priorityEpic);
+
+        taskManager.addNewEpic(priorityEpic);
+        taskManager.addNewSubtask(prioritySubTask1);
+        taskManager.addNewSubtask(prioritySubTask2);
+
+
+        var actualPriority = taskManager.getPrioritizedTasks().first();
+        Assertions.assertEquals(priorityEpic.getId(), actualPriority.getId());
+
+        taskManager.removeSubtaskById(prioritySubTask1.getId());
+
+        actualPriority = taskManager.getPrioritizedTasks().first();
+        Assertions.assertEquals(priorityEpic.getId(), actualPriority.getId());
+        Assertions.assertEquals(LocalDateTime.of(2000, Month.JANUARY, 1, 1, 2), actualPriority.getStartTime());
+    }
 }
