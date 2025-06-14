@@ -1,50 +1,86 @@
 package type.of.task;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Epic extends Task {
 
     private Collection<Subtask> listOfSubtask;
 
 
-    private Status status;
+//    private Status status;
 
 
     public Epic(String nameOfEpic, String description) {
         super(nameOfEpic, description);
-        status = Status.NEW;
         listOfSubtask = new ArrayList<>();
     }
 
-    public Epic(String nameOfEpic, String description, int id) {
-        super(nameOfEpic, description);
-        status = Status.NEW;
+    public Epic(String name, String description, int id) {
+        super(name, description, id);
         listOfSubtask = new ArrayList<>();
-        this.setId(id);
     }
 
     private Epic(String nameOFTask, String description, Status status, int taskId) {
-        super(nameOFTask, description);
-        this.status = status;
-        this.setId(taskId);
+        super(nameOFTask, description, status, taskId);
         listOfSubtask = new ArrayList<>();
 
 
     }
 
-    public static Epic setEpicForLoading(String name, String description, Status status, int id) {
+    private Epic(String nameOFTask, String description, Status status, Integer minutes, LocalDateTime startTime, int taskId) {
+        super(nameOFTask, description, status, minutes, startTime, taskId);
+        listOfSubtask = new ArrayList<>();
+    }
+
+    public static Epic createdEpicWithStatus(String name, String description, Status status, int id) {
         return new Epic(name, description, status, id);
+    }
+
+    public static Epic setEpicForLoading(String nameOFTask, String description, Status status, Integer minutes,
+                                         LocalDateTime startTime, int taskId) {
+        return new Epic(nameOFTask, description, status, minutes, startTime, taskId);
     }
 
     @Override
     public void setStatus(Status status) {
-        System.out.println("Нельзя менять статус Epic'a");
+        throw new IllegalArgumentException();
     }
 
     @Override
     public Status getStatus() {
-        return this.status;
+        return super.getStatus();
+    }
+
+    @Override
+    public LocalDateTime getStartTime() {
+        return super.getStartTime();
+    }
+
+    @Override
+    public void setStartTime(LocalDateTime startTime) {
+        throw new IllegalArgumentException();
+    }
+
+    @Override
+    public Duration getDuration() {
+
+        return super.getDuration();
+    }
+
+    @Override
+    public void setDuration(Duration duration) {
+        throw new IllegalArgumentException();
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return   listOfSubtask.stream()
+                .map(Task::getEndTime)
+                .max(LocalDateTime::compareTo)
+                .orElse(null);
+
     }
 
     public Collection<Subtask> getListOfSubtask() {
@@ -55,6 +91,17 @@ public class Epic extends Task {
         this.listOfSubtask = listOfSubtask;
     }
 
+    public void calculateStartAndDuration() {
+        listOfSubtask.stream()
+                .min((subtask1, subtask2) -> subtask1.getStartTime().compareTo(subtask2.getStartTime()))
+                .ifPresent(subtask -> super.setStartTime(subtask.getStartTime()));
+
+        super.setDuration(listOfSubtask.stream()
+                .map(subtask -> subtask.getDuration())
+                .reduce(Duration.ZERO, Duration::plus));
+
+    }
+
 
     public void checkStatus() {
         Collection<Subtask> checkList = this.listOfSubtask;
@@ -63,7 +110,7 @@ public class Epic extends Task {
 
         if (size == 0) {
 
-            this.status = Status.NEW;
+            super.setStatus(Status.NEW);
             return;
 
         }
@@ -82,11 +129,11 @@ public class Epic extends Task {
 
         }
         if (doneOfStatus == size) {
-            this.status = Status.DONE;
+            super.setStatus(Status.DONE);
         } else if (newOfStatus == size) {
-            this.status = Status.NEW;
+            super.setStatus(Status.NEW);
         } else {
-            this.status = Status.IN_PROGRESS;
+            super.setStatus(Status.IN_PROGRESS);
 
         }
 

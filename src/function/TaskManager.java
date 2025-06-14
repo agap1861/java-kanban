@@ -6,6 +6,7 @@ import type.of.task.Task;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.TreeSet;
 
 public interface TaskManager {
     boolean addNewTask(Task newTask);
@@ -47,6 +48,12 @@ public interface TaskManager {
     Collection<Subtask> listSubtaskOfEpic(Epic foundEpic);
 
     Collection<Task> getHistory();
+
+    TreeSet<Task> getPrioritizedTasks();
+
+    boolean isCrossedTask(Task task1, Task task2);
+
+    boolean isCrossedAnyTasks(Task task1);
 
 
 }
