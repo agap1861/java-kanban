@@ -272,6 +272,17 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Assertions.assertFalse(flag);
 
     }
+    @Test
+    public void shouldNotAddNewSubtaskWithCrossTime(){
+        Subtask subtask = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
+                5, LocalDateTime.of(2024, Month.OCTOBER, 5, 16, 11),
+                8, taskManager.searchEpicById(3));
+        Duration duration = taskManager.searchEpicById(3).getDuration();
+        boolean flag = taskManager.addNewSubtask(subtask);
+        Assertions.assertFalse(flag);
+        Assertions.assertEquals(duration,taskManager.searchEpicById(3).getDuration());
+
+    }
 
     @Test
     public void shouldCorrectlySumDurationInEpic() {
