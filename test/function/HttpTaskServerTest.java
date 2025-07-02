@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import type.of.task.Status;
 import type.of.task.Task;
 
 import java.io.IOException;
@@ -32,8 +33,9 @@ class HttpTaskServerTest {
     @BeforeEach
     public void clear(){
         taskServer.start();
-        taskServer.deleteTasks();
-        taskServer.deleteEpic();
+        manager.removeAllTask();
+        manager.removeAllEpic();
+        manager.removeAllSubtask();
 
     }
     @AfterEach
@@ -43,7 +45,8 @@ class HttpTaskServerTest {
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2",30, LocalDateTime.now());
+        Task task = new Task("Test 2", "Testing task 2",30,
+                LocalDateTime.now());
         // конвертируем её в JSON
         String taskJson = gson.toJson(task);
 

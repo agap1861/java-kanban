@@ -77,6 +77,8 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void postHandle(HttpExchange exchange) throws IOException {
+        String uri = exchange.getRequestURI().toString();
+        String[] split = uri.split("/");
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -84,7 +86,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 .create();
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
-        if (transfer.id != 1) {
+        if (split.length==3) {
             try {
                 Task oldTask = taskManger.getTaskById(transfer.id);
                 Task newTask = new Task(transfer.name, transfer.description, transfer.status,
