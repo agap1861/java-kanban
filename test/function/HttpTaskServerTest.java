@@ -42,7 +42,7 @@ class HttpTaskServerTest {
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2",30, LocalDateTime.of(2022, 7, 1, 14, 30, 1, 0));
+        Task task = new Task("Test 2", "Testing task 2",30, LocalDateTime.now());
         // конвертируем её в JSON
         String taskJson = gson.toJson(task);
 
