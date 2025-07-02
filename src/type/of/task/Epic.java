@@ -8,10 +8,6 @@ public class Epic extends Task {
 
     private Collection<Subtask> listOfSubtask;
 
-
-//    private Status status;
-
-
     public Epic(String nameOfEpic, String description) {
         super(nameOfEpic, description);
         listOfSubtask = new ArrayList<>();
@@ -73,6 +69,13 @@ public class Epic extends Task {
     public void setDuration(Duration duration) {
         throw new IllegalArgumentException();
     }
+    private void updateDuration(Duration duration){
+        super.setDuration(duration);
+    }
+    private void updateStartTime(LocalDateTime startTime){
+        super.setStartTime(startTime);
+    }
+
 
     @Override
     public LocalDateTime getEndTime() {
@@ -92,6 +95,11 @@ public class Epic extends Task {
     }
 
     public void calculateStartAndDuration() {
+        if (listOfSubtask.isEmpty()){
+            updateDuration(null);
+            updateStartTime(null);
+            return;
+        }
         listOfSubtask.stream()
                 .min((subtask1, subtask2) -> subtask1.getStartTime().compareTo(subtask2.getStartTime()))
                 .ifPresent(subtask -> super.setStartTime(subtask.getStartTime()));

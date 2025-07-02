@@ -21,7 +21,7 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<TaskManager> {
     }
 
     @BeforeEach
-    public void createHistory() {
+    public void createHistory() throws NotFoundException {
         expected = new ArrayList<>();
         taskManager.searchTaskById(1);
         expected.add(taskManager.searchTaskById(1));
@@ -41,7 +41,7 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<TaskManager> {
     }
 
     @Test
-    public void ifCopyExistInHistoryRemoveFirstCopyAndAddLastCopy() {
+    public void ifCopyExistInHistoryRemoveFirstCopyAndAddLastCopy() throws NotFoundException {
 
         taskManager.searchTaskById(1);
         expected.removeFirst();

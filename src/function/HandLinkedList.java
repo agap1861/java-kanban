@@ -1,7 +1,10 @@
 package function;
 
+import type.of.task.Task;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HandLinkedList<T> {
 
