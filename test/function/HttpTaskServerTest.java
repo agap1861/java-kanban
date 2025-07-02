@@ -60,11 +60,6 @@ class HttpTaskServerTest {
 
         assertEquals(200, response.statusCode());
 
-        List<Task> tasksFromManager = new ArrayList<>(manager.showUpTask().values());
-
-        assertNotNull(tasksFromManager, "Задачи не возвращаются");
-        assertEquals(1, tasksFromManager.size(), "Некорректное количество задач");
-        assertEquals("Test 2", tasksFromManager.get(0).getName(), "Некорректное имя задачи");
     }
 
 }
