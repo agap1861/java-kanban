@@ -86,7 +86,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 .create();
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
-        if (split.length==3) {
+        if (split.length == 3) {
             try {
                 Task oldTask = taskManger.getTaskById(transfer.id);
                 Task newTask = new Task(transfer.name, transfer.description, transfer.status,
