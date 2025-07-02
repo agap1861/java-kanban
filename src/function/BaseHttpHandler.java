@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class BaseHttpHandler<T extends TaskManager> {
     protected T taskManger;
 
-    protected  BaseHttpHandler(T taskManager) {
+    protected BaseHttpHandler(T taskManager) {
         this.taskManger = taskManager;
     }
 
@@ -83,7 +83,7 @@ public class BaseHttpHandler<T extends TaskManager> {
 
     }
 
-    protected void sendSuccessfulUpdate(HttpExchange exchange,String text) {
+    protected void sendSuccessfulUpdate(HttpExchange exchange, String text) {
         exchange.getResponseHeaders().set("Content-Type", "application/json;charset=utf-8");
         try {
             exchange.sendResponseHeaders(201, text.getBytes(StandardCharsets.UTF_8).length);

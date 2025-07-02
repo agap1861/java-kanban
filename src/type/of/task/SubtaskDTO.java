@@ -1,6 +1,5 @@
 package type.of.task;
 
-import java.util.Optional;
 
 public class SubtaskDTO extends TaskDTO {
 

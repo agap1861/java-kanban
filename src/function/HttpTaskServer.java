@@ -21,21 +21,22 @@ public class HttpTaskServer {
 
     public HttpTaskServer(TaskManager manager) throws IOException {
         int port = 8080;
-        this.httpServer = HttpServer.create(new InetSocketAddress(port),0);
+        this.httpServer = HttpServer.create(new InetSocketAddress(port), 0);
         this.manager = manager;
 
-        httpServer.createContext("/tasks",new TasksHandler(manager));
-        httpServer.createContext("/epics",new EpicsHandler(manager));
+        httpServer.createContext("/tasks", new TasksHandler(manager));
+        httpServer.createContext("/epics", new EpicsHandler(manager));
         httpServer.createContext("/subtasks", new SubtasksHandler(manager));
         httpServer.createContext("/history", new HistoryHandler(manager));
         httpServer.createContext("/prioritized", new PrioritizedHandler(manager));
     }
 
-    public void start(){
+    public void start() {
         httpServer.start();
         System.out.println("Сервер запущен");
     }
-    public void stop(){
+
+    public void stop() {
         httpServer.stop(0);
         System.out.println("Сервер остановлен");
     }
@@ -47,13 +48,16 @@ public class HttpTaskServer {
 
 
     }
-    public static Gson getGson(){
+
+    public static Gson getGson() {
         return gson;
     }
-    public void deleteTasks(){
+
+    public void deleteTasks() {
         manager.removeAllTask();
     }
-    public void  deleteEpic(){
+
+    public void deleteEpic() {
         manager.removeAllEpic();
     }
 

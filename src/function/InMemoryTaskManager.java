@@ -36,26 +36,25 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-  @Override
-  public void addNewEpic(Epic newEpic)throws DuplicateTaskException  {
-      if (epics.containsValue(newEpic)) {
-          throw new DuplicateTaskException();
-      } else {
-          epics.put(newEpic.getId(), newEpic);
+    @Override
+    public void addNewEpic(Epic newEpic) throws DuplicateTaskException {
+        if (epics.containsValue(newEpic)) {
+            throw new DuplicateTaskException();
+        } else {
+            epics.put(newEpic.getId(), newEpic);
 
-      }
+        }
 
-  }
-
+    }
 
 
     @Override
-    public void addNewSubtask(Subtask newSubtask)throws ConcurrentTaskException, DuplicateTaskException {
+    public void addNewSubtask(Subtask newSubtask) throws ConcurrentTaskException, DuplicateTaskException {
 
         int foundId = newSubtask.getIdEpic();
 
         if (subtasks.containsValue(newSubtask)) {
-            throw  new DuplicateTaskException();
+            throw new DuplicateTaskException();
         } else {
             if (isCrossedAnyTasks(newSubtask)) {
                 throw new ConcurrentTaskException();
@@ -174,7 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
             epic.checkStatus();
             priority.remove(epic);
             epic.calculateStartAndDuration();
-            if (epic.getStartTime()!=null && epic.getDuration()!=null){
+            if (epic.getStartTime() != null && epic.getDuration() != null) {
                 priority.add(epic);
             }
 
@@ -210,7 +209,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask searchSubtaskById(int id) throws NotFoundException  {
+    public Subtask searchSubtaskById(int id) throws NotFoundException {
         Subtask foundSubtask = subtasks.get(id);
         if (foundSubtask == null) {
             throw new NotFoundException();

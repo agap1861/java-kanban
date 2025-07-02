@@ -37,7 +37,7 @@ public class TaskTypeAdapter implements JsonSerializer<Task>, JsonDeserializer<T
             case "Subtask" -> {
                 return jsonDeserializationContext.deserialize(jsonElement, Subtask.class);
             }
-            default -> throw new RuntimeException("Unknow type "+ typeOfTask);
+            default -> throw new RuntimeException("Unknow type " + typeOfTask);
 
         }
     }

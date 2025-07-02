@@ -96,7 +96,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
 
             } catch (NotFoundException e) {
                 sendNotFound(exchange);
-            }catch (ConcurrentTaskException e){
+            } catch (ConcurrentTaskException e) {
                 sendHasInteractions(exchange);
             }
 

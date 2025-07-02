@@ -110,13 +110,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void addNewSubtask(Subtask newSubtask)throws ConcurrentTaskException, DuplicateTaskException  {
+    public void addNewSubtask(Subtask newSubtask) throws ConcurrentTaskException, DuplicateTaskException {
         super.addNewSubtask(newSubtask);
         save();
     }
 
     @Override
-    public void addNewEpic(Epic newEpic)throws DuplicateTaskException {
+    public void addNewEpic(Epic newEpic) throws DuplicateTaskException {
         super.addNewEpic(newEpic);
         save();
 
@@ -172,13 +172,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask oldSubtask, Subtask newSubtask) throws NotFoundException{
+    public void updateSubtask(Subtask oldSubtask, Subtask newSubtask) throws NotFoundException {
         super.updateSubtask(oldSubtask, newSubtask);
         save();
     }
 
     @Override
-    public void updateTask(Task oldTask, Task newTask) throws NotFoundException{
+    public void updateTask(Task oldTask, Task newTask) throws NotFoundException {
         super.updateTask(oldTask, newTask);
         save();
     }

@@ -69,17 +69,19 @@ public class Epic extends Task {
     public void setDuration(Duration duration) {
         throw new IllegalArgumentException();
     }
-    private void updateDuration(Duration duration){
+
+    private void updateDuration(Duration duration) {
         super.setDuration(duration);
     }
-    private void updateStartTime(LocalDateTime startTime){
+
+    private void updateStartTime(LocalDateTime startTime) {
         super.setStartTime(startTime);
     }
 
 
     @Override
     public LocalDateTime getEndTime() {
-        return   listOfSubtask.stream()
+        return listOfSubtask.stream()
                 .map(Task::getEndTime)
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
@@ -95,7 +97,7 @@ public class Epic extends Task {
     }
 
     public void calculateStartAndDuration() {
-        if (listOfSubtask.isEmpty()){
+        if (listOfSubtask.isEmpty()) {
             updateDuration(null);
             updateStartTime(null);
             return;

@@ -76,7 +76,7 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
                 .create();
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        EpicDTO transfer=gson.fromJson(json, EpicDTO.class);
+        EpicDTO transfer = gson.fromJson(json, EpicDTO.class);
 
 
         if (transfer.id != 0) {
@@ -98,15 +98,15 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
             try {
                 taskManger.addNewEpic(epic);
                 EpicDTO dto = new EpicDTO();
-                dto.id=epic.getId();
+                dto.id = epic.getId();
                 dto.name = epic.getName();
                 dto.description = epic.getDescription();
-                dto.status= epic.getStatus();
+                dto.status = epic.getStatus();
                 String response = "Добавили : " + gson.toJson(dto);
                 sendText(exchange, response);
             } catch (DuplicateTaskException e) {
                 sendHasDuplicateTask(exchange);
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Ошибка");
             }
         }
@@ -126,7 +126,8 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
         if (spit.length == 3) {
             try {
                 Epic epic = taskManger.getEpicById(Integer.parseInt(spit[2]));
-                EpicDTO dto = EpicDTO.convertToDTO(epic);;
+                EpicDTO dto = EpicDTO.convertToDTO(epic);
+                ;
                 response = response + gson.toJson(dto);
 
             } catch (NotFoundException e) {

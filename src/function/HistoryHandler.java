@@ -37,17 +37,17 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
                     .setPrettyPrinting()
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                     .registerTypeAdapter(Duration.class, new DurationAdapter())
-                //    .registerTypeAdapter(Task.class,new TaskTypeAdapter())
+                    //    .registerTypeAdapter(Task.class,new TaskTypeAdapter())
                     .create();
 
             List<TaskDTO> tasksDTO = taskManger.getHistory()
                     .stream()
                     .map(task -> {
-                        if (task instanceof Epic){
+                        if (task instanceof Epic) {
                             return EpicDTO.convertToDTO(task);
                         } else if (task instanceof Subtask) {
                             return SubtaskDTO.convertToDTO(task);
-                        }else {
+                        } else {
                             return TaskDTO.convertToDTO(task);
                         }
 
@@ -55,7 +55,7 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
                     })
                     .collect(Collectors.toList());
             String response = gson.toJson(tasksDTO);
-            sendText(exchange,response);
+            sendText(exchange, response);
 
         } else {
             sendGetWrongMethod(exchange);

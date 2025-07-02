@@ -55,7 +55,7 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
             String response = gson.toJson(dto);
             sendText(exchange, response);
 
-        }else {
+        } else {
             sendGetWrongMethod(exchange);
         }
     }

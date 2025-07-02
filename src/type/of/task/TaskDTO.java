@@ -2,7 +2,7 @@ package type.of.task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Optional;
+
 
 public class TaskDTO {
     public String typeOfTask;
