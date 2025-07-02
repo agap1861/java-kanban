@@ -2,6 +2,7 @@ package function;
 
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import type.of.task.Task;
@@ -57,8 +58,8 @@ class HttpTaskServerTest {
 
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Assertions.assertEquals(200,response.statusCode());
 
-        assertEquals(200, response.statusCode());
 
     }
 
