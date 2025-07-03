@@ -31,6 +31,7 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         switch (method) {
             case "GET" -> getHandle(exchange);
             case "POST" -> postHandle(exchange);
+            case "PUT" -> putHandle(exchange);
             case "DELETE" -> deleteHandle(exchange);
             default -> sendGetWrongMethod(exchange);
         }
@@ -86,7 +87,38 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
                 .create();
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
-        if (split.length == 3) {
+        if (split.length == 2) {
+            Task task = new Task(transfer.name, transfer.description, (int) transfer.duration.toMinutes(),
+                    transfer.startTime, transfer.status);
+            try {
+                taskManger.addNewTask(task);
+                TaskDTO dto = TaskDTO.convertToDTO(task);
+                String response = "Добавлена: " + gson.toJson(dto);
+                sendText(exchange, response);
+            } catch (ConcurrentTaskException e) {
+                sendHasInteractions(exchange);
+            } catch (DuplicateTaskException e) {
+                sendHasDuplicateTask(exchange);
+            }
+
+        } else {
+            sendGetWrongMethod(exchange);
+        }
+
+
+    }
+
+    private void putHandle(HttpExchange exchange) throws IOException {
+        String uri = exchange.getRequestURI().toString();
+        String[] split = uri.split("/");
+        if (split.length == 2) {
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                    .registerTypeAdapter(Duration.class, new DurationAdapter())
+                    .create();
+            String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
             try {
                 Task oldTask = taskManger.getTaskById(transfer.id);
                 Task newTask = new Task(transfer.name, transfer.description, transfer.status,
@@ -101,22 +133,12 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             }
 
         } else {
-            Task task = new Task(transfer.name, transfer.description, (int) transfer.duration.toMinutes(),
-                    transfer.startTime, transfer.status);
-            try {
-                taskManger.addNewTask(task);
-                TaskDTO dto = TaskDTO.convertToDTO(task);
-                String response = "Добавлена: " + gson.toJson(dto);
-                sendText(exchange, response);
-            } catch (ConcurrentTaskException e) {
-                sendHasInteractions(exchange);
-            } catch (DuplicateTaskException e) {
-                sendHasDuplicateTask(exchange);
-            }
+            sendGetWrongMethod(exchange);
         }
 
 
     }
+
 
     private void deleteHandle(HttpExchange exchange) {
         String uri = exchange.getRequestURI().toString();

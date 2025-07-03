@@ -230,6 +230,8 @@ public class InMemoryTaskManager implements TaskManager {
         int id = oldTask.getId();
         newTask.setId(id);
         tasks.replace(id, newTask);
+        priority.remove(oldTask);
+        priority.add(newTask);
     }
 
     @Override
@@ -243,6 +245,8 @@ public class InMemoryTaskManager implements TaskManager {
         newSubtask.setIdEpic(searchEpicById(idForEpic));
         epics.get(idForEpic).checkStatus();
         epics.get(idForEpic).calculateStartAndDuration();
+        priority.remove(getEpicById(oldSubtask.getIdEpic()));
+        priority.add(getEpicById(newSubtask.getIdEpic()));
 
     }
 

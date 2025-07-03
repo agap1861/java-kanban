@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
+    Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .create();
 
     protected SubtasksHandler(TaskManager taskManager) {
         super(taskManager);
@@ -28,6 +33,7 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         switch (method) {
             case "GET" -> getHandle(exchange);
             case "POST" -> postHandle(exchange);
+            case "PUT" -> putHandle(exchange);
             case "DELETE" -> deleteHandle(exchange);
             default -> sendGetWrongMethod(exchange);
         }
@@ -37,11 +43,6 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
     private void getHandle(HttpExchange exchange) {
         String uri = exchange.getRequestURI().toString();
         String[] split = uri.split("/");
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
 
         if (split.length == 2) {
             List<SubtaskDTO> subtasksDTO = taskManger.showUpSubtask().values()
@@ -51,11 +52,8 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
                         return dto;
                     })
                     .collect(Collectors.toList());
-
-
             String response = gson.toJson(subtasksDTO);
             sendText(exchange, response);
-
 
         } else {
             try {
@@ -76,14 +74,40 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void postHandle(HttpExchange exchange) throws IOException {
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
+
+        String uri = exchange.getRequestURI().toString();
+        String[] spit = uri.split("/");
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         SubtaskDTO transfer = gson.fromJson(json, SubtaskDTO.class);
-        if (transfer.id != 0) {
+        if (spit.length == 2) {
+            try {
+                Subtask subtask = new Subtask(transfer.name, transfer.description,
+                        (int) transfer.duration.toMinutes(), transfer.startTime,
+                        taskManger.getEpicById(transfer.idEpic));
+                taskManger.addNewSubtask(subtask);
+                SubtaskDTO dto = SubtaskDTO.convertToDTO(subtask);
+                String response = "Добавили: " + gson.toJson(dto);
+                sendText(exchange, response);
+            } catch (ConcurrentTaskException e) {
+                sendHasInteractions(exchange);
+            } catch (DuplicateTaskException e) {
+                sendHasDuplicateTask(exchange);
+            } catch (NotFoundException e) {
+                sendNotFound(exchange);
+            }
+        } else {
+            sendGetWrongMethod(exchange);
+        }
+
+
+    }
+
+    private void putHandle(HttpExchange exchange) throws IOException {
+        String uri = exchange.getRequestURI().toString();
+        String[] spit = uri.split("/");
+        String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        SubtaskDTO transfer = gson.fromJson(json, SubtaskDTO.class);
+        if (spit.length == 2) {
             try {
                 Subtask oldSubtask = taskManger.getSubtaskById(transfer.id);
                 Subtask newSubtask = new Subtask(transfer.name, transfer.description, transfer.status,
@@ -100,36 +124,13 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
                 sendHasInteractions(exchange);
             }
 
-        } else {
-
-            try {
-                Subtask subtask = new Subtask(transfer.name, transfer.description,
-                        (int) transfer.duration.toMinutes(), transfer.startTime,
-                        taskManger.getEpicById(transfer.idEpic));
-                taskManger.addNewSubtask(subtask);
-                SubtaskDTO dto = SubtaskDTO.convertToDTO(subtask);
-                String response = "Добавили: " + gson.toJson(dto);
-                sendText(exchange, response);
-            } catch (ConcurrentTaskException e) {
-                sendHasInteractions(exchange);
-            } catch (DuplicateTaskException e) {
-                sendHasDuplicateTask(exchange);
-            } catch (NotFoundException e) {
-                sendNotFound(exchange);
-            }
         }
-
 
     }
 
     private void deleteHandle(HttpExchange exchange) {
         String uri = exchange.getRequestURI().toString();
         String[] spit = uri.split("/");
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
         String response = "Удалили: ";
         if (spit.length == 3) {
             try {

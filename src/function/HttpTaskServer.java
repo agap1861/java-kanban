@@ -33,12 +33,12 @@ public class HttpTaskServer {
 
     public void start() {
         httpServer.start();
-//        System.out.println("Сервер запущен");
+        System.out.println("Сервер запущен");
     }
 
     public void stop() {
         httpServer.stop(0);
-//        System.out.println("Сервер остановлен");
+        System.out.println("Сервер остановлен");
     }
 
     public static void main(String[] args) throws IOException {

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import type.of.task.Epic;
 import type.of.task.Status;
 import type.of.task.Task;
 
@@ -14,14 +15,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class HttpTaskServerTest {
     int port = 8080;
-
     TaskManager manager = Managers.getDefault();
     HttpTaskServer taskServer = new HttpTaskServer(manager);
 
@@ -30,22 +27,25 @@ class HttpTaskServerTest {
 
     HttpTaskServerTest() throws IOException {
     }
+
     @BeforeEach
-    public void clear(){
+    public void clear() {
         taskServer.start();
         manager.removeAllTask();
         manager.removeAllEpic();
         manager.removeAllSubtask();
 
     }
+
     @AfterEach
-    public void stop(){
+    public void stop() {
         taskServer.stop();
     }
+
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2",30,
+        Task task = new Task("Test 2", "Testing task 2", 30,
                 LocalDateTime.now());
         // конвертируем её в JSON
         String taskJson = gson.toJson(task);
@@ -61,9 +61,22 @@ class HttpTaskServerTest {
 
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200,response.statusCode());
+        Assertions.assertEquals(200, response.statusCode());
+    }
 
-
+    @Test
+    public void addEpic() throws IOException, InterruptedException {
+        Epic epic = new Epic("name", "descr");
+        String epicJson = gson.toJson(epic);
+        HttpClient client = HttpClient.newHttpClient();
+        URI url = URI.create("http://localhost:8080/epics");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(HttpRequest.BodyPublishers.ofString(epicJson))
+                .header("Content-Type", "application/json;charset=utf-8")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Assertions.assertEquals(200, response.statusCode());
     }
 
 }
