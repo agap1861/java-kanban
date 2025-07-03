@@ -1,14 +1,10 @@
 package function;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import type.of.task.*;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,13 +29,6 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         String uri = exchange.getRequestURI().toString();
         String[] split = uri.split("/");
         if (split.length == 2) {
-            Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                    .registerTypeAdapter(Duration.class, new DurationAdapter())
-                    .create();
-
-
             Set<TaskDTO> dto = taskManger.getPrioritizedTasks()
                     .stream()
                     .map(task -> {
