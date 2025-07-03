@@ -18,11 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
-    Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(Duration.class, new DurationAdapter())
-            .create();
 
     protected EpicsHandler(TaskManager taskManager) {
         super(taskManager);

@@ -41,12 +41,6 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
     private void getHandle(HttpExchange exchange) {
         String uri = exchange.getRequestURI().toString();
         String[] split = uri.split("/");
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
-
         if (split.length == 2) {
             List<TaskDTO> tasksDTO = taskManger.showUpTask().values()
                     .stream()
@@ -80,11 +74,6 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
     private void postHandle(HttpExchange exchange) throws IOException {
         String uri = exchange.getRequestURI().toString();
         String[] split = uri.split("/");
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
         String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
         if (split.length == 2) {
@@ -112,11 +101,6 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         String uri = exchange.getRequestURI().toString();
         String[] split = uri.split("/");
         if (split.length == 2) {
-            Gson gson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                    .registerTypeAdapter(Duration.class, new DurationAdapter())
-                    .create();
             String json = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             TaskDTO transfer = gson.fromJson(json, TaskDTO.class);
             try {

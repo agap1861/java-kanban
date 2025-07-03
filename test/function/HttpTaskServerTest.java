@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import type.of.task.Epic;
-import type.of.task.Status;
+
 import type.of.task.Task;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 
 
-class HttpTaskServerTest {
+class HttpTaskServerTest extends TaskManagerTest {
     int port = 8080;
     TaskManager manager = Managers.getDefault();
     HttpTaskServer taskServer = new HttpTaskServer(manager);
@@ -29,11 +29,9 @@ class HttpTaskServerTest {
     }
 
     @BeforeEach
-    public void clear() {
+    public void setUp() {
         taskServer.start();
-        manager.removeAllTask();
-        manager.removeAllEpic();
-        manager.removeAllSubtask();
+
 
     }
 
@@ -42,41 +40,44 @@ class HttpTaskServerTest {
         taskServer.stop();
     }
 
-    @Test
-    public void testAddTask() throws IOException, InterruptedException {
-        // создаём задачу
-        Task task = new Task("Test 2", "Testing task 2", 30,
-                LocalDateTime.now());
-        // конвертируем её в JSON
-        String taskJson = gson.toJson(task);
-
-        // создаём HTTP-клиент и запрос
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks");
+    private HttpRequest createRequest(String taskJson,String path) {
+        URI url = URI.create("http://localhost:8080/"+path);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                 .header("Content-Type", "application/json;charset=utf-8")
                 .build();
+        return request;
 
 
+    }
+
+    @Test
+    public void testAddTask() throws IOException, InterruptedException {
+        Task task = new Task("Test 2", "Testing task 2", 30,
+                LocalDateTime.now());
+        String taskJson = gson.toJson(task);
+        HttpClient client = HttpClient.newHttpClient();
+        String path = "tasks";
+        HttpRequest request = createRequest(taskJson,path);
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Assertions.assertEquals(200, response.statusCode());
     }
+
 
     @Test
     public void addEpic() throws IOException, InterruptedException {
         Epic epic = new Epic("name", "descr");
         String epicJson = gson.toJson(epic);
         HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/epics");
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(url)
-                .POST(HttpRequest.BodyPublishers.ofString(epicJson))
-                .header("Content-Type", "application/json;charset=utf-8")
-                .build();
+        String path = "epics";
+        HttpRequest request = createRequest(epicJson,path);
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Assertions.assertEquals(200, response.statusCode());
     }
 
+    @Override
+    protected TaskManager createTaskManager() {
+        return Managers.getDefault();
+    }
 }
