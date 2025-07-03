@@ -68,12 +68,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка при сохранение");
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
 
-    private Task fromString(String value) {
+    private Task fromString(String value) throws NotFoundException {
         String[] split = value.split(",");
 
         int id = Integer.parseInt(split[0]);
@@ -108,25 +110,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public boolean addNewSubtask(Subtask newSubtask) {
-        boolean flag = super.addNewSubtask(newSubtask);
+    public void addNewSubtask(Subtask newSubtask) throws ConcurrentTaskException, DuplicateTaskException {
+        super.addNewSubtask(newSubtask);
         save();
-        return flag;
     }
 
     @Override
-    public boolean addNewEpic(Epic newEpic) {
-        boolean flag = super.addNewEpic(newEpic);
-
+    public void addNewEpic(Epic newEpic) throws DuplicateTaskException {
+        super.addNewEpic(newEpic);
         save();
-        return flag;
+
     }
 
     @Override
-    public boolean addNewTask(Task newTask) {
-        boolean flag = super.addNewTask(newTask);
+    public void addNewTask(Task newTask) throws ConcurrentTaskException, DuplicateTaskException {
+        super.addNewTask(newTask);
         save();
-        return flag;
+
     }
 
     @Override
@@ -172,13 +172,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask oldSubtask, Subtask newSubtask) {
+    public void updateSubtask(Subtask oldSubtask, Subtask newSubtask) throws NotFoundException {
         super.updateSubtask(oldSubtask, newSubtask);
         save();
     }
 
     @Override
-    public void updateTask(Task oldTask, Task newTask) {
+    public void updateTask(Task oldTask, Task newTask) throws NotFoundException {
         super.updateTask(oldTask, newTask);
         save();
     }
