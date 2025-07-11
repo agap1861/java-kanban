@@ -21,7 +21,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @BeforeEach
-    public void AddDifferentTaskInManager() {
+    public void AddDifferentTaskInManager() throws ConcurrentTaskException, DuplicateTaskException {
         taskManager = createTaskManager();
 
         Task task1 = new Task("task1", "descriptionForTask1", Status.NEW, 30,
@@ -50,36 +50,38 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    public void ShouldNotAddTaskWithTheSameId() {
+    public void ShouldNotAddTaskWithTheSameId()  {
 
         Task task1 = new Task("task1", "descriptionForTask1" +
                 " спринта", Status.NEW, 1);
-        boolean resultOfAdd = taskManager.addNewTask(task1);
-        Assertions.assertFalse(resultOfAdd, "Добавилось Task  с одинаковым id");
+
+        Assertions.assertThrows(DuplicateTaskException.class, () -> taskManager.addNewTask(task1));
+
     }
 
     @Test
     public void ShouldNotAddEpicWithTheSameId() {
         Epic epic1 = Epic.createdEpicWithStatus("epic1", "descriptionForEpic1 ", Status.NEW, 3);
 
-        boolean resultOfAdd = taskManager.addNewEpic(epic1);
-        Assertions.assertFalse(resultOfAdd, "Добавилось Epic  с одинаковым id");
+        Assertions.assertThrows(DuplicateTaskException.class, () -> taskManager.addNewEpic(epic1));
+
     }
 
     @Test
-    public void ShouldNotAddSubtaskWithTheSameId() {
+    public void ShouldNotAddSubtaskWithTheSameId() throws NotFoundException {
         Subtask subtask1 = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW, 45,
                 LocalDateTime.of(2024, Month.OCTOBER, 5, 16, 15), 5,
                 taskManager.searchEpicById(3));
 
-        boolean resultOfAddInTheSameEpic = taskManager.addNewSubtask(subtask1);
 
-        Assertions.assertFalse(resultOfAddInTheSameEpic, "Добавилось Subtask  с одинаковым id");
+        Assertions.assertThrows(DuplicateTaskException.class, () ->  taskManager.addNewSubtask(subtask1));
+
+
 
     }
 
     @Test
-    public void ShouldNotBeChangedFieldsOfTaskWhenAdd() {
+    public void ShouldNotBeChangedFieldsOfTaskWhenAdd() throws ConcurrentTaskException, DuplicateTaskException, NotFoundException {
 
         var manager = Managers.getDefault();
         String expectedName = "TaskName";
@@ -102,7 +104,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void ShouldNotBeChangedFieldsOfEpicWhenAdd() {
+    public void ShouldNotBeChangedFieldsOfEpicWhenAdd() throws ConcurrentTaskException, DuplicateTaskException, NotFoundException {
         var manager = Managers.getDefault();
         String expectedName = "EpicName";
         String expectedDescription = "EpicDescription";
@@ -118,7 +120,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void ShouldNotBeChangedFieldsOfSubtaskWhenAdd() {
+    public void ShouldNotBeChangedFieldsOfSubtaskWhenAdd() throws NotFoundException, ConcurrentTaskException, DuplicateTaskException {
         var manager = Managers.getDefault();
         String expectedName = "SubtaskName";
         String expectedDescription = "SubtaskDescription";
@@ -141,7 +143,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void searchTask() {
+    public void searchTask() throws NotFoundException {
         Task expectedTask = new Task("task1", "descriptionForTask1" +
                 " спринта", Status.NEW, 1);
         Assertions.assertEquals(taskManager.searchTaskById(1), expectedTask, "Поиск Task'ov не работает");
@@ -149,7 +151,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void searchEpic() {
+    public void searchEpic() throws NotFoundException {
         Epic expectedEpic = Epic.createdEpicWithStatus("epic1", "descriptionForEpic1 ", Status.NEW,
                 3);
         Assertions.assertEquals(taskManager.searchEpicById(3), expectedEpic, "Поиск Epic'ov " +
@@ -157,7 +159,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void searchSubtask() {
+    public void searchSubtask() throws NotFoundException {
         Epic epic1 = new Epic("epic2", "descriptionForEpic2 ");
         Subtask expectedSubtask = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
                 45, LocalDateTime.of(2024, Month.OCTOBER, 5, 16, 15),
@@ -167,7 +169,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void changeStatusOfTask() {
+    public void changeStatusOfTask() throws NotFoundException, ConcurrentTaskException {
         Task newTask = new Task("task1", "descriptionForTask1", Status.IN_PROGRESS, 30,
                 LocalDateTime.of(2024, Month.JUNE, 1, 9, 0), 1);
         Task oldTask = taskManager.searchTaskById(1);
@@ -178,7 +180,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void changeStatusOfEpic() {
+    public void changeStatusOfEpic() throws NotFoundException, ConcurrentTaskException {
         Status expected = Status.IN_PROGRESS;
         Subtask subtask = new Subtask("subtask", "descr", Status.DONE, 50,
                 LocalDateTime.of(2023, Month.DECEMBER, 25, 10, 5), 7,
@@ -190,7 +192,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void changeStatusOfSubtask() {
+    public void changeStatusOfSubtask() throws NotFoundException, ConcurrentTaskException {
         Status expected = Status.DONE;
         Subtask subtask = new Subtask("subtask", "descr", Status.DONE, 50,
                 LocalDateTime.of(2023, Month.DECEMBER, 25, 10, 5), 7,
@@ -201,7 +203,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void changeStatusOfEpicWhenDeletedSubtask() {
+    public void changeStatusOfEpicWhenDeletedSubtask() throws NotFoundException, ConcurrentTaskException {
         Subtask subtask = new Subtask("subtask", "descr", Status.DONE, 50,
                 LocalDateTime.of(2023, Month.DECEMBER, 25, 10, 5), 6,
                 taskManager.searchEpicById(4));
@@ -215,17 +217,19 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void checkRemoveById() {
+    public void checkRemoveById() throws NotFoundException {
         taskManager.removeTaskById(1);
-        Assertions.assertNull(taskManager.searchTaskById(1));
+
+        Assertions.assertThrows(NotFoundException.class, ()->taskManager.searchTaskById(1));
         taskManager.removeEpicById(3);
-        Assertions.assertNull(taskManager.searchEpicById(3));
+        Assertions.assertThrows(NotFoundException.class, ()->taskManager.searchEpicById(3));
         taskManager.removeSubtaskById(7);
-        Assertions.assertNull(taskManager.searchSubtaskById(7));
+        Assertions.assertThrows(NotFoundException.class, ()->taskManager.searchSubtaskById(7));
+
     }
 
     @Test
-    public void showListOfSubtask() {
+    public void showListOfSubtask() throws NotFoundException {
         Collection<Subtask> expected = new ArrayList<>();
         expected.add(taskManager.searchSubtaskById(6));
         expected.add(taskManager.searchSubtaskById(7));
@@ -235,7 +239,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldCorrectlyRemoveSubtaskWhenRemoveEpic() {
+    public void shouldCorrectlyRemoveSubtaskWhenRemoveEpic() throws NotFoundException {
 
         Map<Integer, Subtask> expectedSubtasks = new HashMap<>();
         expectedSubtasks.put(taskManager.searchSubtaskById(5).getId(), taskManager.searchSubtaskById(5));
@@ -249,7 +253,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldCorrectlyRemoveSubtaskInEpicWhenRemoveSubtask() {
+    public void shouldCorrectlyRemoveSubtaskInEpicWhenRemoveSubtask() throws NotFoundException {
         List<Subtask> expected = List.of(taskManager.searchSubtaskById(6));
         taskManager.removeSubtaskById(7);
         Assertions.assertEquals(expected, taskManager.listSubtaskOfEpic(taskManager.searchEpicById(4)),
@@ -268,31 +272,30 @@ abstract class TaskManagerTest<T extends TaskManager> {
     public void shouldNotAddTaskWithCrossTime() {
         Task cross = new Task("name", "decr", Status.NEW, 30,
                 LocalDateTime.of(2024, Month.JUNE, 1, 8, 31), 8);
-        boolean flag = taskManager.addNewTask(cross);
-        Assertions.assertFalse(flag);
+        Assertions.assertThrows(ConcurrentTaskException.class, ()-> taskManager.addNewTask(cross));
+
 
     }
     @Test
-    public void shouldNotAddNewSubtaskWithCrossTime(){
+    public void shouldNotAddNewSubtaskWithCrossTime() throws NotFoundException {
         Subtask subtask = new Subtask("subtask1", "descriptionForSubtask1", Status.NEW,
                 5, LocalDateTime.of(2024, Month.OCTOBER, 5, 16, 11),
                 8, taskManager.searchEpicById(3));
         Duration duration = taskManager.searchEpicById(3).getDuration();
-        boolean flag = taskManager.addNewSubtask(subtask);
-        Assertions.assertFalse(flag);
+        Assertions.assertThrows(ConcurrentTaskException.class , ()->taskManager.addNewSubtask(subtask) );
         Assertions.assertEquals(duration,taskManager.searchEpicById(3).getDuration());
 
     }
 
     @Test
-    public void shouldCorrectlySumDurationInEpic() {
+    public void shouldCorrectlySumDurationInEpic() throws NotFoundException {
         Duration expectedDuration = taskManager.searchSubtaskById(6).getDuration()
                 .plus(taskManager.searchSubtaskById(7).getDuration());
         Assertions.assertEquals(expectedDuration, taskManager.searchEpicById(4).getDuration());
     }
 
     @Test
-    public void shouldCorrectlyChangedDurationInEpic() {
+    public void shouldCorrectlyChangedDurationInEpic() throws NotFoundException {
         Duration expectedDuration = taskManager.searchSubtaskById(6).getDuration();
         taskManager.removeSubtaskById(7);
         Assertions.assertEquals(expectedDuration, taskManager.searchEpicById(4).getDuration());
@@ -300,7 +303,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    public void addTheEarlyDateAndCheckedWorkTreeSet() {
+    public void addTheEarlyDateAndCheckedWorkTreeSet() throws DuplicateTaskException, ConcurrentTaskException {
 
         Epic priorityEpic = new Epic("epic8", "descriptionForEpic8 ", 8);
 
@@ -316,7 +319,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    public void addEarlyDateAndAfterRemoveShouldBeCurrantTask() {
+    public void addEarlyDateAndAfterRemoveShouldBeCurrantTask() throws DuplicateTaskException, ConcurrentTaskException {
 
         var currentPriority = taskManager.getPrioritizedTasks().first();
 
@@ -344,7 +347,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    public void afterRemoveSubtaskShouldBeChangePriority() {
+    public void afterRemoveSubtaskShouldBeChangePriority() throws DuplicateTaskException, ConcurrentTaskException {
 
         Epic priorityEpic = new Epic("epic8", "descriptionForEpic8 ", 8);
 

@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    boolean addNewTask(Task newTask);
+    void addNewTask(Task newTask) throws ConcurrentTaskException, DuplicateTaskException;
 
-    boolean addNewEpic(Epic newEpic);
+    void addNewEpic(Epic newEpic) throws DuplicateTaskException;
 
-    boolean addNewSubtask(Subtask newSubtask);
+    void addNewSubtask(Subtask newSubtask) throws ConcurrentTaskException, DuplicateTaskException;
 
     Map<Integer, Task> showUpTask();
 
@@ -33,17 +33,17 @@ public interface TaskManager {
 
     void removeSubtaskById(int id);
 
-    Task searchTaskById(int id);
+    Task searchTaskById(int id) throws NotFoundException;
 
-    Epic searchEpicById(int id);
+    Epic searchEpicById(int id) throws NotFoundException;
 
-    Subtask searchSubtaskById(int id);
+    Subtask searchSubtaskById(int id) throws NotFoundException;
 
-    void updateTask(Task oldTask, Task newTask);
+    void updateTask(Task oldTask, Task newTask) throws NotFoundException;
 
-    void updateSubtask(Subtask oldSubtask, Subtask newSubtask);
+    void updateSubtask(Subtask oldSubtask, Subtask newSubtask) throws NotFoundException, ConcurrentTaskException;
 
-    void updateEpic(Epic oldEpic, Epic newEpic);
+    void updateEpic(Epic oldEpic, Epic newEpic) throws NotFoundException;
 
     Collection<Subtask> listSubtaskOfEpic(Epic foundEpic);
 
@@ -54,6 +54,12 @@ public interface TaskManager {
     boolean isCrossedTask(Task task1, Task task2);
 
     boolean isCrossedAnyTasks(Task task1);
+
+    Epic getEpicById(int id) throws NotFoundException;
+
+    Task getTaskById(int id) throws NotFoundException;
+
+    Subtask getSubtaskById(int id) throws NotFoundException;
 
 
 }
